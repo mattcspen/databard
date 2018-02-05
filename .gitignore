@@ -4,5 +4,7 @@
 *.tar
 *.jpeg
 *.tiff
+*.png
+*.gif
 *data*
 *ipynb_checkpoints*

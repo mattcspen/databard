@@ -3,7 +3,6 @@
 *.gz
 *.tar
 *.jpeg
-*.png
 *.tiff
 *data*
 *ipynb_checkpoints*

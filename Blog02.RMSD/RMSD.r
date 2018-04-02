@@ -48,6 +48,24 @@ scale_colour_Publication <- function(...){
 
 }
 
+# Function to generate the copyright for any plot
+# Useage:
+# g <- ggplot(...) + ...
+# add.copyright(g)
+# add.copyright(g, 0.5, 1/20)
+add.copyright <- function(plot, fontsize=1, rel.height=1/20) {
+    cp <- textGrob(paste("\uA9 Matt Spencer ", format(Sys.time(), "%Y"), ", databard.blog", sep=''),
+             gp=gpar(fontfamily = "Verdana", cex=fontsize) ,
+             x=unit(1, "npc"), hjust = 1) #, y=unit(0, "npc"), vjust = 0)
+    
+    cp.h <- round(rel.height*100)
+    plot.h <- 100-cp.h
+    lay <- matrix(c(rep(1,plot.h), rep(2,cp.h)))
+    
+    return(grid.arrange(plot, cp, layout_matrix = lay))
+}
+
+
 # Just a smidge of data cleaning
 statdata <- read.csv('stature-hand-foot.csv')
 colnames(statdata) <- c('gender', 'height', 'hand', 'foot')
@@ -66,8 +84,8 @@ g <- ggplot(data = data, aes(hand, height)) +
 
     theme_Publication() +
     theme(legend.justification = c(1, 0), legend.position = c(0.95, 0.05))
-g
-#ggsave(file= "figures/1.initial.plot.jpeg", g, width = 5, height = 5, dpi = 200)
+gc <- add.copyright(g, 0.75)
+ggsave(file= "figures/1.initial.plot.jpeg", gc, width = 5, height = 5, dpi = 200)
 
 # Calculate regression line of best fit
 hmod <- train(height ~ hand, data, method = "lm")
@@ -83,8 +101,8 @@ bestfit.slope <- summary(hmod)$coefficients['hand', 'Estimate']
 g2 <- g + 
     geom_abline(slope = bestfit.slope, intercept = bestfit.int) +
     geom_point(aes(color = sex), size = 0.5) 
-g2
-#ggsave(file = "figures/2.fit.jpeg", g2, width = 5, height = 5, dpi = 200)
+gc2 <- add.copyright(g2, 0.75)
+ggsave(file = "figures/2.fit.jpeg", gc2, width = 5, height = 5, dpi = 200)
 
 data$predicted <- predict(hmod, newdata = data)
 coords <- data %>% 
@@ -96,8 +114,8 @@ coords <- data %>%
 g3 <- g + geom_line(data=coords, aes(hand, height, group = grp), size = 0.25) +
     geom_abline(slope = bestfit.slope, intercept = bestfit.int) +
     geom_point(aes(color = sex), size = 0.5) 
-g3
-#ggsave(file = "figures/3.fit.errors.jpeg", g3, width = 5, height = 5, dpi = 200)
+gc3 <- add.copyright(g3, 0.75)
+ggsave(file = "figures/3.fit.errors.jpeg", gc3, width = 5, height = 5, dpi = 200)
 
 # Predictions for the outliers
 data %>% arrange(predicted) %>% head(1)
@@ -117,8 +135,8 @@ g4 <- ggplot(data = data, aes(hand, height)) +
 
     theme_Publication() +
     theme(legend.justification = c(1, 0), legend.position = c(0.95, 0.05))
-g4
-#ggsave(file = "figures/4.fit.errors.zoom.jpeg", g4, width = 5, height = 5, dpi = 200)
+gc4 <- add.copyright(g4, 0.75)
+ggsave(file = "figures/4.fit.errors.zoom.jpeg", gc4, width = 5, height = 5, dpi = 200)
 
 # Calculate the average error over the core population
 data %>% filter(hand > 6, hand < 9) %>%
@@ -174,16 +192,24 @@ g5 <- ggplot(data = data, aes(hand, height)) +
 
     theme_Publication() +
     theme(legend.justification = c(1, 0), legend.position = c(0.95, 0.05))
-g5
-#ggsave(file = "figures/5.nofit.errors.zoom.jpeg", g5, width = 5, height = 5, dpi = 200)
+gc5 <- add.copyright(g5, 0.75)
+ggsave(file = "figures/5.nofit.errors.zoom.jpeg", gc5, width = 5, height = 5, dpi = 200)
 
-plot.errors <- function(alldata, data.no, model, rmsd, t, filename) {
+plot.errors <- function(alldata, data.no, test, model, rmsd, t, filename) {
     rmsd <- round(rmsd, 5)
     bestfit.int <- summary(model)$coefficients['(Intercept)', 'Estimate']
     bestfit.slope <- summary(model)$coefficients['hand', 'Estimate']
     
     data.no$predicted <- predict(model, newdata = data.no)
+    test$predicted <- predict(model, newdata = test)
+    
     coords <- data.no %>% 
+        mutate(grp = row_number()) %>% 
+        select(grp, hand, height, predicted) %>%
+        rename(actual = height) %>%
+        gather(h.type, height, actual, predicted) 
+    
+    test.coords <- test %>% 
         mutate(grp = row_number()) %>% 
         select(grp, hand, height, predicted) %>%
         rename(actual = height) %>%
@@ -191,6 +217,7 @@ plot.errors <- function(alldata, data.no, model, rmsd, t, filename) {
     
     g <- ggplot(data = alldata, aes(hand, height)) + 
         geom_line(data = coords, aes(hand, height, group = grp), size = 0.25) +
+        geom_line(data = test.coords, aes(hand, height, group = grp), color="#00b303", size = 0.5) +
         geom_abline(slope = bestfit.slope, intercept = bestfit.int) +
         geom_point(aes(color = sex)) +
         geom_label(data = data.frame(), aes(x = 7.75, y = 4.9, label = paste("RMSD:", rmsd)), size = 5, hjust = 0) +
@@ -205,7 +232,8 @@ plot.errors <- function(alldata, data.no, model, rmsd, t, filename) {
             legend.justification = c(1, 0), legend.position = c(0.95, 0.05)
         )
     
-    #ggsave(file = filename, g, dpi = 100)
+    gc <- add.copyright(g, 0.5)
+    ggsave(file = filename, gc, dpi = 100)
     return(g)
 }
 
@@ -239,7 +267,7 @@ model.core <- function(alldata, train, test, n.outliers, timeline) {
     timeline <- rbind(timeline, data.frame(outliers = n.outliers, rmsd = rmsd))
     
     t <- plot.timeline(timeline)
-    plot.errors(alldata, rbind(train.no, test), hmod.no, rmsd, t, paste("BestFit", n.outliers, ".png", sep = ''))
+    plot.errors(alldata, train.no, test, hmod.no, rmsd, t, paste("BestFit", n.outliers, ".png", sep = ''))
     
     return(timeline)
 }
@@ -256,3 +284,5 @@ timeline <- data.frame(outliers = numeric(), rmsd = numeric())
 for (i in 0:80) {
     timeline <- model.core(data, train, test, i, timeline)
 }
+
+

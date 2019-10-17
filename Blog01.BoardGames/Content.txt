@@ -1,0 +1,288 @@
+[wptab name='Narrative']
+
+<a href="http://databard.blog/wp-content/uploads/2017/12/01.PlayerDistribution-e1522723056861.jpeg"><img src="http://databard.blog/wp-content/uploads/2017/12/01.PlayerDistribution-300x188.jpeg" alt="" width="300" height="188" class="aligncenter size-medium wp-image-255" /></a>
+
+Hello, and welcome to the inaugural post of my blog! Be sure to check out the 'About' sections to learn more about what I'm doing here and why, as well as some more information about me!
+
+To kick off my Data Bard-ing, I decided to investigate something close to home: Board Games! I love to play board games, so I jumped on it right away when I saw somebody had posted a bunch of board game stats from <a href="https://boardgamegeek.com/">Board Game Geek (BGG)</a> to my favorite data website: <a href="https://www.kaggle.com/datasets" target="_blank" rel="noopener">Kaggle</a>. <strong>On this page I'm just going to tell the story, without getting into much of the process of how I reached certain conclusions or massaged the data to produce the graphics. To see the whole process, check out the technical version of this post by clicking the tab at the top!</strong>
+
+So looking at this board game dataset, there's lots of interesting information about each game, including the time it takes to play, how many people can play it, and what BGG calls the 'weight' of the game - a measure of how complex or difficult a game is to understand (alternatively, an inverse measure of the likelihood that my mother would enjoy it). What particularly caught my eye was that the games are all labelled with what gaming mechanics they involve (things like Die Rolling, Cooperative Play, etc) and what thematic categories they fall into (things like Environment, Medicine, War, etc).
+
+This was exciting to me, as it had never occurred to me to look for games I might enjoy by looking at the mechanics and themes I tend to enjoy. I'm sure that subconsciously I take these factors into account when perusing my favorite gaming stores, but this is a much more analytical approach to this goal!
+
+So my first question was, which mechanics and themes have high ratings? Of course, people rate games, not mechanics, but we can get a feel for which mechanics tend to produce interesting and fun games by examining the ratings of the games with these mechanics.
+
+In full disclosure, this next bit is <strong>heavily</strong> inspired by Kaggle user Max Philipp, because I saw him produce a cool figure that I wanted to try out. This is a nice visualization technique called a TreeMap, I like it because the size of each section can be used to indicate one measurement, while the color of the section also means something. In the TreeMap below, each rectangle represents a mechanic, where the size of the rectangle shows how many games have been made that include this mechanic, while the color shows how highly rated it is (again, the mechanics themselves aren't rated, but you know what I mean).
+
+&nbsp;
+
+<img class="aligncenter wp-image-81 size-full" src="http://databard.blog/wp-content/uploads/2017/12/01.Mechanic.Treemap-c-2.jpg" alt="" width="600" height="600" />
+
+Pretty interesting! No surprise that Dice Rolling is the most used mechanic - dice are good for lots of things! The mechanic prevalence is pretty easy to rank, since the visualization is constructed in size-order. But it's not terribly obvious which ones are the <em>highest</em> and <em>lowest</em> rated mechanics using this visualization. It turns out that the 'Chit-Pull System' and 'Campaign / Battle Card Driven' mechanics have the highest two average ratings. I'm not too familiar with the 'Chit-Pull System' as a mechanic, but looking at the list of games that use it, I see that Castle Panic is one of them, which I have played (great game for fast-paced players who don't want to remember tons of rules!). I imagine it is referring to the mechanic where you randomly select a token that initiates an action.
+
+The 'Singing' and 'Pattern Recognition' mechanics have the lowest average ratings. Funnily enough, 'None' was also one of the lowest scorers, so apparently games need to have mechanics to succeed! I'm surprised so many games even exist without any mechanics... I'm guessing a lot of them <em>have</em> mechanics, but they aren't annotated correctly in the database.
+
+Keep in mind that we're only considering the 5000 or so highest rated games, so don't get too offended that your favorite game mechanic has among the lowest average ratings here. This is really just showing which mechanics can really make the difference between a good game and a great game!
+
+Here - let's look at the same visualization for Themes.
+
+<img class="aligncenter wp-image-54 size-full" src="http://databard.blog/wp-content/uploads/2017/12/01.Category.Treemap-c.jpg" alt="" width="600" height="600" />
+
+Wow! There's a lot more red and a lot less green on this figure than the Mechanics one! I wonder how that happened... where are all the games with good ratings?? Maybe it has to do with the fact that there's a more even distribution of games between the themes. Or maybe it's just because poorly rated games have more theme tags than highly rated games... That is a question that we <em>could</em> answer using a bit of data science, but I'm not too interested in the themes right now - I would rather spend time looking at mechanics! In fact, since there are so many, I'm going to pick some of my favorites and focus on them. These are the mechanics I find to be some of the most interesting, largely because most of them promote the creation of games that have really high replay-ability!
+<h3>Deck / Pool Building</h3>
+Dominion, Super Motherlode, even "Deck Building - the Deck Building Game". I've never played a deck-building game I didn't like, except for the early iterations of my own feeble attempts at creating one. It is so satisfying to have everybody start with exactly the same starting deck and customize them using the same pool of options. Of course, not all deck-building games work like that, with exactly equivalent options (see Super Motherlode), but they are still very interesting. Pool-building is a bit different, but still enjoyable!
+<h3>Variable Player Powers</h3>
+Sometimes this refers to occupational specialties (Pandemic, Forbidden Island, etc), sometimes supernatural powers (various Marvel and DC games), and sometimes it is a complex set of skills, traits, and equipment that you can use as you see fit (Arkham Horror, D&amp;D-like games such as Descent: Journeys into the Dark, etc). In a well-designed game where different players have different abilities, everyone feels like their unique contribution is important. This mechanic increases replayability as well, since you can choose a different character or class, which immediately makes your approach to the game different!
+<h3>Modular Board</h3>
+I grew up on Settlers of Catan (Seafarer's expansion), but nobody would ever play it as much as I did if it didn't have a variable board setup that made every game unique! Games like Settlers and StarCraft: The Board Game have flexible setups that are determined at the start, but other games build their play area as you go (Tikal, Betrayal at House on the Hill). Either way, modular boards are a great way to make every game different, and in some cases keep you guessing throughout the course of the game!
+<h3>Role Playing</h3>
+The most obvious example to me is Dungeons and Dragons - a game (perhaps more accurately, a genre of game) that comes in all shapes and sizes, all levels of complexity and commitment, ranging from pure storytelling and decision-making to tactical positioning and resource management. Other types of role playing include secret roles (Secret Hitler, Bang!) and hidden traitors (Shadows over Camelot) that introduce an element of uncertainty that keeps you on your toes. I think it is fun to role-play even when it isn't really part of the game - Small World gives you the chance to play the role of several different races throughout the game. In any case, I find that role playing is a way to have fun even when playing a not-particularly-fun game, and a way to have even more fun when the game is already enjoyable!
+<h3>Cooperative Play</h3>
+I love cooperative games, because sometimes you want to play a game casually, not competitively! Not to say that cooperative games aren't challenging, Pandemic and Shadows Over Camelot can be extremely difficult when you use the "hard mode" rules. But for me, cooperation is all about having fun with the people I like to spend time with! And of course, I'll save the best for last by pointing out that Mechs vs. Minions is quite possibly the greatest game of all time, and it is another fantastic example of the cooperative mechanic!
+
+So I'll point out these five mechanics as being my favorites. The first obvious question is, which board games have multiple of these mechanics? Are there any games that combine ALL of them?
+
+The answer is yes! There is exactly one game (in this database) that has all five of my favorite mechanics: Mage Knight Board Game! Apparently I should go get that game! (Friends and relatives - please let me actually look into the game before buying it for me under the assumption that I'm going to enjoy it just based on the inclusion of the mechanics that interest me.) In fact, there's quite a good listing of games with 2-4 of these mechanics too.
+
+Now to bring in another kind of information, how do my game mechanics relate to number of players? And more generally, if I have a certain number of friends, how many games exist that will support that many people?
+
+<img class="aligncenter wp-image-56 size-full" src="http://databard.blog/wp-content/uploads/2017/12/01.PlayerDistribution-c.jpg" alt="" width="960" height="600" />
+
+To answer that, I made the stacked bar chart above. The gray bars in the background are how many total games support certain player counts, where the colored bars show how many games for each player count have one or more of my mechanics. As you can see, the VAST majority of games are made for 2-4 players, and this applies to my favorite mechanics as well. In fact, the shape of the colored portion almost exactly mimics the shape of the gray, leading me to conclude that none of these mechanics are niche mechanics that only work for a certain number of players. You might expect that cooperative games can't be played with one player, but really most of the time these are the most appropriate games for solo-mode, as they are usually players vs. environment kind of situations. I've played some games like this that kind of cheat for 1-player mode by telling the one player to play as if they were two people, but I can't say that I mind much.
+
+That's all for today! I have plans to post several follow-ups for examining board games more, but I might post about some other topics first. I'm always looking for tips and suggestions for other ways to explore data, so if you have any burning questions you want to know about board games, leave me a comment and I might include it in the next session of Board Game Analytics!
+[/wptab]
+
+[wptab name='Technical']
+
+<a href="http://databard.blog/wp-content/uploads/2017/12/01.PlayerDistribution-e1522723056861.jpeg"><img src="http://databard.blog/wp-content/uploads/2017/12/01.PlayerDistribution-300x188.jpeg" alt="" width="300" height="188" class="aligncenter size-medium wp-image-255" /></a>
+
+Hello, and welcome to the inaugural post of my blog! Be sure to check out the 'About' sections to learn more about what I'm doing here and why, as well as some more information about me!
+
+To kick off my Data Bard-ing, I decided to investigate something close to home: Board Games! I love to play board games, so I jumped on it right away when I saw somebody had posted a bunch of board game stats from <a href="https://boardgamegeek.com/">Board Game Geek (BGG)</a> to my favorite data website: <a href="https://www.kaggle.com/datasets" target="_blank" rel="noopener">Kaggle</a>. <strong>On this page I'm going to tell the story, but also get into a lot of detail about the challenges I had investigating this data. There are also code snippets hidden throughout the page that can be expanded to see <em>exactly</em> what I did. If you'd rather just read the story and skip the boring details, I recommend the Narrative version of the post - just click the tab at the top!</strong> But if you want to see more of the whole process, this is the place for you! You could even follow along a bit - <a href="https://www.kaggle.com/mrpantherson/board-game-data">here's</a> where the data came from.
+
+For this project I used R code. This is partly because everything I intend to do is pretty straightforward to implement as data frame operations, but also because I like the options for visualizing that can be done using the <code>ggplot2</code> package. All of the code that I used in this process will be included in hidden code blocks, like the one below that shows what libraries I used.
+
+[expand title="Code"]
+<pre><code>library(dplyr) 
+library(ggplot2)
+library(splitstackshape)
+library(VennDiagram)
+library(treemap)</code></pre>
+[/expand]
+So looking at this board game dataset, there's lots of interesting information about each game, including the time it takes to play, how many people can play it, and what BGG calls the 'weight' of the game - a measure of how complex or difficult a game is to understand. One of the nice things about using Kaggle is that the datasets are pretty well curated by the time they get to that point, so there isn't a lot of cleaning that needs to happen. However, taking a quick glance through some of the attributes, I did notice that there were some unusual values for the minimum and maximum players that can play a game - mainly that there were several with 0 as one of these numbers. I couldn't see how a board game can reasonably be played with 0 players (as the min or the max), so I took a glance at what was going on with these games.
+
+After some investigation, I determined that there are several entries as "games" that are actually catch-alls for some game categories/genres, such as "Traditional Card Games". Additionally, there are several games that are poorly documented in some respects, bringing the curation of the present values into question. To address both of these issues, I removed all games that had both a min_players and max_players of 0, as this seems to have covered most of it, only removing 10 games from the list. There are a few more instances where the minimum number of players is 0, but I counted those as having a minimum of 1 instead. Furthermore, I noticed some situations where min_players is a realistic number, but max_players is 0. Manual investigation revealed that this typically indicates that the only supported number of players is the min_player value, so I took that into account moving forward.
+
+[expand title="Code"]
+<pre><code>games &lt;- read.csv('../data/bgg_db_2017_04.csv') %&gt;%
+    filter(! (min_players == '0' &amp; max_players == '0' ) )
+# Note that there are several entries as "games" that are actually catch-alls
+# for some game categories, such as "Traditional Card Games". Additionally,
+# there are several games that are poorly documented in some respects, 
+# bringing the curation of the present values into question. To address both
+# of these issues, I removed all games that had both a min_players and 
+# max_players of 0, as this seems to have covered most of it, only removing 
+# 10 games from the list.
+
+# However, also note that there are situations where min_players is a 
+# realistic number, but max_players is 0. Manual investigation reveals that
+# this typically indicates that the only supported number of players is the
+# min_player value.
+           
+# Also note that games that have no player limit often have arbitrarily large
+# values for max_players, like 99 or 999, which is why I stopped my histogram
+# below at players&lt;=10</code></pre>
+[/expand]
+Now that I was satisfied with the quality of the data, what particularly caught my eye was that the games are all labelled with their constituent gaming mechanics (things like Die Rolling, Cooperative Play, etc) and what thematic categories they fall into (things like Environment, Medicine, War, etc).
+
+My first question was, which mechanics and themes have high ratings? Of course, people rate games, not mechanics, but we can get a feel for which mechanics tend to produce interesting and fun games by examining the ratings of the games with these mechanics.
+
+A challenge of looking at the mechanics was that there are multiple mechanics per game, despite there being only one entry in the dataset for each game. Thus, the mechanics field was a comma-separated jumble of the included mechanics, which needed parsing before the dataset was even in first normal form (1NF)! Thus, it was necessary to expand the dataset such that each row contained only one mechanic - resulting in multiple rows for most games. At this point, it was possible to group by, count, and otherwise explore the mechanics individually.
+
+In full disclosure, this next bit is <strong>heavily</strong> inspired by Kaggle user Max Philipp, because I saw him produce a novel figure that I wanted to attempt. This is a nice visualization technique called a TreeMap, I like it because the size of each section can be used to indicate one data attribute, while the color of the section can indicate a second attribute. In the TreeMap below, each rectangle represents a mechanic, where the size of the rectangle shows how many games have been made that include this mechanic, while the color shows how highly rated it is (again, the mechanics themselves aren't rated, but you know what I mean. In fact, the "Average Rating" in the TreeMap is actually an Average average rating, as the rating for each board game is an average of user ratings, and this is the average value of all average ratings for games including the relevant mechanic.).
+
+[expand title="Code"]
+<pre><code># Right now all mechanics for a game are listed in a single comma-separated 
+# field. Expand these out so there are multiple rows per game, each with a
+# single mechanic.
+games$mechanic &lt;- as.character(games$mechanic)
+games.mechexpand &lt;- cSplit(games, splitCols = "mechanic", direction = "long")
+
+# Now calculate the mean average rating for each mechanic
+# and the number of games with that mechanic.
+mech.info &lt;- games.mechexpand %&gt;%
+    group_by(mechanic) %&gt;%
+    mutate(count = length(mechanic), Average_Rating = mean(avg_rating)) %&gt;%
+    select(mechanic, count, Average_Rating) %&gt;%
+    unique()
+
+# Plot a TreeMap using this data
+#jpeg(filename = "Mechanic.Treemap.jpeg", width = 6, height = 6, units = 'in', res = 200)
+treemap(mech.info, index = "mechanic", vSize = "count", vColor = "Average_Rating", type = 'value', 
+        title = 'Board Game Mechanics', title.legend = 'Average Rating',
+        palette = c('#ff0000','#ffffff','#00cc00'), range = c(6.2,7.6), mapping = c(6.3,7.5))
+#dev.off()</code></pre>
+[/expand]
+<img class="aligncenter wp-image-81 size-full" src="http://databard.blog/wp-content/uploads/2017/12/01.Mechanic.Treemap-c-2.jpg" alt="" width="600" height="600" />
+
+Pretty interesting! No surprise that Dice Rolling is the most used mechanic - dice are good for lots of things! The mechanic prevalence is pretty easy to rank, since the visualization is constructed in size-order. But it's not terribly obvious which ones are the <em>highest</em> and <em>lowest</em> rated mechanics using this visualization. It turns out that the 'Chit-Pull System' and 'Campaign / Battle Card Driven' mechanics have the highest two average ratings. I consider it a limitation of this visualization strategy that only the ordering of one of the dimensions can be assessed with any degree of certainty.
+
+Keep in mind that we're only considering the 5000 or so highest rated games, so don't get too offended that your favorite game mechanic has among the lowest average ratings here. This is really just showing which mechanics can really make the difference between a good game and a great game!
+
+Here - let's look at the same visualization for Themes. The data carpentry step was almost identical to that of mechanics, as that attribute was also a comma-separated assortment of themes for each game.
+
+[expand title="Code"]
+<pre><code># Similarly to Mechanics, Categories are also in a comma-separated field.
+# So we can address them in a similar fashion.
+games$category &lt;- as.character(games$category)
+games.catexpand &lt;- cSplit(games, splitCols = "category", direction = "long")
+
+# Calculate mean average rating
+cat.info &lt;- games.catexpand %&gt;%
+    group_by(category) %&gt;%
+    mutate(count = length(category), Average_Rating = mean(avg_rating)) %&gt;%
+    select(category, count, Average_Rating) %&gt;%
+    unique()
+
+# Generate TreeMap
+#jpeg(filename = "Category.Treemap.jpeg", width = 6, height = 6, units = 'in', res = 200)
+treemap(cat.info, index = "category",vSize = "count", vColor = "Average_Rating", type = 'value', 
+        title = 'Board Game Themes', title.legend = 'Average Rating',
+        palette = c('#ff0000','#ffffff','#00cc00'), range = c(6.3,7.7), mapping = c(6.3,7.7))
+#dev.off()</code></pre>
+[/expand]
+<img class="aligncenter wp-image-54 size-full" src="http://databard.blog/wp-content/uploads/2017/12/01.Category.Treemap-c.jpg" alt="" width="600" height="600" />
+
+Wow! There's a lot more red and a lot less green on this figure than the Mechanics one! I wonder how that happened... where are all the games with good ratings?? Maybe it has to do with the fact that there's a more even distribution of games between the themes. Or maybe it's just because poorly rated games have more theme tags than highly rated games... That is a question that we <em>could</em> answer using a bit of data science, but I'm not too interested in the themes right now - I would rather spend time looking at mechanics! In fact, since there are so many, I'm going to pick some of my favorites and focus on them. These are the mechanics I find to be some of the most interesting, largely because most of them promote the creation of games that have really high replay-ability: Deck/Pool Building, Variable Player Powers, Modular Board, Role Playing, and Cooperative Play.
+
+[expand title="DataBard's Narrative"]
+<h3>Deck / Pool Building</h3>
+Dominion, Super Motherlode, even "Deck Building - the Deck Building Game". I've never played a deck-building game I didn't like, except for the early iterations of my own feeble attempts at creating one. It is so satisfying to have everybody start with exactly the same starting deck and customize them using the same pool of options. Of course, not all deck-building games work like that, with exactly equivalent options (see Super Motherlode), but they are still very interesting. Pool-building is a bit different, but still enjoyable!
+<h3>Variable Player Powers</h3>
+Sometimes this refers to occupational specialties (Pandemic, Forbidden Island, etc), sometimes supernatural powers (various Marvel and DC games), and sometimes it is a complex set of skills, traits, and equipment that you can use as you see fit (Arkham Horror, D&amp;D-like games such as Descent: Journeys into the Dark, etc). In a well-designed game where different players have different abilities, everyone feels like their unique contribution is important. This mechanic increases replayability as well, since you can choose a different character or class, which immediately makes your approach to the game different!
+<h3>Modular Board</h3>
+I grew up on Settlers of Catan (Seafarer's expansion), but nobody would ever play it as much as I did if it didn't have a variable board setup that made every game unique! Games like Settlers and StarCraft: The Board Game have flexible setups that are determined at the start, but other games build their play area as you go (Tikal, Betrayal at House on the Hill). Either way, modular boards are a great way to make every game different, and in some cases keep you guessing throughout the course of the game!
+<h3>Role Playing</h3>
+The most obvious example to me is Dungeons and Dragons - a game (perhaps more accurately, a genre of game) that comes in all shapes and sizes, all levels of complexity and commitment, ranging from pure storytelling and decision-making to tactical positioning and resource management. Other types of role playing include secret roles (Secret Hitler, Bang!) and hidden traitors (Shadows over Camelot) that introduce an element of uncertainty that keeps you on your toes. I think it is fun to role-play even when it isn't really part of the game - Small World gives you the chance to play the role of several different races throughout the game. In any case, I find that role playing is a way to have fun even when playing a not-particularly-fun game, and a way to have even more fun when the game is already enjoyable!
+<h3>Cooperative Play</h3>
+I love cooperative games, because sometimes you want to play a game casually, not competitively! Not to say that cooperative games aren't challenging, Pandemic and Shadows Over Camelot can be extremely difficult when you use the "hard mode" rules. But for me, cooperation is all about having fun with the people I like to spend time with! And of course, I'll save the best for last by pointing out that Mechs vs. Minions is quite possibly the greatest game of all time, and it is another fantastic example of the cooperative mechanic![/expand]
+The first obvious question is, which board games have multiple of these mechanics? Are there any games that combine ALL of them? After my previous work expanding the dataset to separate the mechanics, it was a pretty trivial filter -&gt; group_by -&gt; count operation to identify how many of my chosen mechanics are in each game.
+
+[expand title="Code"]
+<pre><code># Identify the games that have at least one of the chosen mechanics
+select.mechs &lt;- c('Deck / Pool Building', 'Variable Player Powers', 'Modular Board', 'Role Playing', 'Co-operative Play')
+select.gamelist &lt;- games.mechexpand %&gt;% 
+    filter(mechanic %in% select.mechs) %&gt;% 
+    select(names, mechanic, category) %&gt;%
+    group_by(names) %&gt;%
+    unique() %&gt;%
+    mutate(repetitive = length(names)) %&gt;%
+    select(names, repetitive) %&gt;%
+    unique() 
+select.games &lt;- merge(games, select.gamelist, by = 'names')
+
+# Count just how many of the chosen mechanics are present in the games
+# This lets us find games with many of the mechanics
+mech.count &lt;- games.mechexpand %&gt;% 
+    filter(mechanic %in% select.mechs) %&gt;% 
+    select(names, mechanic, category) %&gt;%
+    group_by(names) %&gt;%
+    unique() %&gt;%
+    mutate(num.mechs = length(names)) %&gt;%
+    select(names, num.mechs) %&gt;%
+    unique() 
+
+# Which games have the most selected mechanics?
+mech.count %&gt;%
+    arrange(desc(num.mechs)) %&gt;%
+    head(10)
+
+# Convert the number of mechanics to a factor - 
+# this will make plotting it easier in a moment.
+mech.count$num.mechs &lt;- factor(mech.count$num.mechs, levels = c('5','4','3','2','1'))</code></pre>
+[/expand]
+The answer is yes! There is exactly one game (in this database) that has all five of my favorite mechanics: Mage Knight Board Game! In fact, there's quite a good listing of games with 2-4 of these mechanics too.
+
+Now to bring in another kind of information, how do my game mechanics relate to number of players? And more generally, if I have a certain number of friends, how many games exist that will support that many people?
+
+Good thing I already did some exploration of how the min and max player attributes are set up in this dataset. However, since my question is "if I have X people, what games can I play?" that requires a bit more information than just the min and max allowed players - it also requires me to extrapolate that out to include amounts of players in between the min and max. To help with this, I wrote these functions:
+
+[expand title="Code"]
+<pre><code># These functions help convert a value for minimum players
+# and maximum players to the list of all possible number of
+# players that can play the game. Note that this assumes 
+# that a game can always be played with any number of 
+# players between the min and max, which isn't always true.
+get.numlist &lt;- function(minval, maxval) {
+    if (minval == 0 &amp;&amp; maxval == 0) return('')
+    if (maxval == 0) return(minval)
+    if (minval == 0) minval &lt;- 1
+    numlist &lt;- c()
+    for (i in minval:maxval) {
+        numlist &lt;- c(numlist, i)
+    }
+    paste(numlist, collapse = ',')
+}
+        
+expand.range &lt;- function(min, max) {
+    sapply(1:length(min), function(x) get.numlist(as.numeric(min[x]), as.numeric(max[x])))
+}
+
+# Similar to the Mechanic and Category expansions above, here
+# we expand the data frame to have one row for every number of 
+# players that can play each game.
+games.plyrexpand &lt;- games %&gt;%
+    mutate(players = expand.range(min_players, max_players)) %&gt;%
+    cSplit(splitCols = "players", direction = "long") %&gt;%
+    filter(players &lt;= 10) %&gt;%
+    mutate(player.cat = factor(players))
+
+# Same thing, but only using the games that have at least one
+# of the chosen mechanics.
+select.games.plyrexpand &lt;- select.games %&gt;%
+    mutate(players = expand_range(min_players, max_players)) %&gt;%
+    cSplit(splitCols = "players", direction = "long") %&gt;%
+    filter(players &lt;= 10) %&gt;%
+    mutate(player.cat = factor(players))</code></pre>
+[/expand]
+That operation was intentionally set up and executed such that the number of players was treated almost exactly like I've been handling the expansion of mechanics and themes from comma-separated strings into multiple rows. Thus, a lot of the code was reusable.
+
+[expand title="Code"]
+<pre><code># Histogram that will compare the number of games that 
+# can be played with certain numbers of players. Compare
+# the distribution of the colored area representing the 
+# selected games to the gray area representing all games.
+plot &lt;- select.games.plyrexpand %&gt;% 
+    select(names, player.cat) %&gt;%
+    merge(mech.count) %&gt;%
+    ggplot(aes(x = player.cat)) +
+           ggtitle("How many board games can be played with # players?") +
+           geom_bar(data = games.plyrexpand, width = 1) +
+           geom_label(data = data.frame(), aes(x = '3', y = 3000, label = 'All Games'), size = 4, fill = 'gray60') +
+           geom_bar(aes(fill = num.mechs), width = 1) +
+           scale_fill_brewer(palette = 'Reds') +
+           labs(x = '# Players', y = '# Games', fill = 'Games with\n# Mechanics') +
+           scale_y_continuous(limits = c(0,4250), expand = c(0, 0)) +
+           theme(
+               plot.title = element_text(hjust = 0.5),
+               
+               panel.background = element_rect(fill = 'white'),
+               panel.grid.major.x = element_blank(),
+               panel.grid.major.y = element_line(colour = "gray20", size = 0.2, linetype = 'dotted'),
+               axis.ticks = element_blank(),
+               axis.line.x = element_line(color = "black", size = 0.5),
+               
+               legend.justification = c(1,0.5), legend.position = c(1,0.5)
+               )
+plot
+#ggsave(file='PlayerDistribution.jpeg', plot, width = 8, height = 5, dpi = 300)</code></pre>
+[/expand]
+<img class="aligncenter wp-image-56 size-full" src="http://databard.blog/wp-content/uploads/2017/12/01.PlayerDistribution-c.jpg" alt="" width="960" height="600" />
+
+As its title implies, this figure visualizes the answer to the question I posed. The gray bars in the background are how many total games support certain player counts, where the colored bars show how many games for each player count have one or more of my mechanics. As you can see, the VAST majority of games are made for 2-4 players, and this applies to my favorite mechanics as well. In fact, the distribution of games including some of my mechanics is nearly equivalent to the overall distribution of games across 1-10 players. This leads me to conclude that none of the mechanics I chose are niche mechanics that only work for a certain number of players.
+
+That's all for today! I have plans to post several follow-ups for examining this board game data more thoroughly, but I might post about some other topics first. I'm always looking for tips and suggestions for other ways to explore data, and how to improve my coding and visualization techniques, so if you have any burning questions you want to know about board games, leave me a comment and I might include it in the next session of Board Game Analytics!
+[/wptab]
+
+[end_wptabset]

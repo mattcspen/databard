@@ -1,0 +1,74 @@
+[wptab name='Narrative']
+
+<a href="http://databard.blog/wp-content/uploads/2018/04/EasterTeaser-e1522722376881.jpg"><img src="http://databard.blog/wp-content/uploads/2018/04/EasterTeaser-300x226.jpg" alt="" width="300" height="226" class="aligncenter size-medium wp-image-250" /></a>
+
+Hi all! Happy Easter!
+
+This is going to be more of a storytelling post: light on the data analysis part and more anecdotal.
+
+Of course, being the father of a 2-year-old son, we went to an Easter egg hunt (multiple, actually) and he experienced the thrilling ritual of locating plastic egg impostors filled with distinctly un-chick-like objects. One particularly thrilling hunt we attended was the event sponsored by the local town, which likely employed thousands of eggs and was attended by hundreds of children. It was very exciting.
+
+After the hunt was over, I was looking through the eggs and noticed that there were lots of yellow eggs and only one teal egg (which didn't really surprise me, as I don't think I've ever actually seen a teal Easter egg before). Of course, it's probably because these eggs happened to still be there by the time my son picked them up, but given that the event collected donated eggs from many people and institutions, I would guess that there weren't an equal number of each color to begin with.
+
+Anyway, it occurred to me that lining up the eggs in like color groups was pretty close to the graph that I would make to share this information with others, and I thought it was actually a more appealing and pretty way to show it than if I were to actually make the graph. And as I have lately been enamored with <a href="https://www.reddit.com/r/dataisbeautiful/">reddit.com/r/dataisbeautiful</a>, I wanted to share this simple yet effective and beautiful visualization with like-minded data vis buffs.
+
+[caption id="attachment_208" align="aligncenter" width="700"]<a href="http://databard.blog/wp-content/uploads/2018/04/2018.04.01.EasterEggs.jpg"><img class="size-large wp-image-208" src="http://databard.blog/wp-content/uploads/2018/04/2018.04.01.EasterEggs-1024x768.jpg" alt="" width="700" height="525" /></a> Curse the color purple for being impervious to photography.[/caption]
+
+To my surprise, I was notified a couple of hours later that the post was being removed from the page, because it did not qualify for their specifications of a data visualization. That was unexpected! I thought, what about it wouldn't fit? It is admittedly visualizing some fairly trivial data, but it is data nonetheless. As the picture that I posted was remarkably similar to the column graph that I would have made to show the same information, I would think that it certainly counts as a data visualization. And I would argue that this pictorial presentation was much more beautiful.
+
+It turns out, after reading the specifications, that they only accept visualizations that were generated automatically, and they specifically exclude pictures from their material. Partly to make a point, I went ahead and generated the corresponding column graph.
+
+<a href="http://databard.blog/wp-content/uploads/2018/04/2018.04.01.easteregg_colors.jpeg"><img class="aligncenter size-large wp-image-211" src="http://databard.blog/wp-content/uploads/2018/04/2018.04.01.easteregg_colors-1024x614.jpeg" alt="" width="700" height="420" /></a>
+
+I posted the new graph (which conformed to the page's standards). Based on the community response in the first couple of hours, I felt like it didn't make quite as much of a stir as the original photo. However, that is a very subjective way to qualify my opinion that the picture is superior, so I would have to put in a much more concerted effort to determine whether people generally agree with me or not. I would love to hear what you guys think in the comments: which graph do you like better, and why?
+
+[/wptab]
+[wptab name='Technical']
+
+<a href="http://databard.blog/wp-content/uploads/2018/04/EasterTeaser-e1522722376881.jpg"><img src="http://databard.blog/wp-content/uploads/2018/04/EasterTeaser-300x226.jpg" alt="" width="300" height="226" class="aligncenter size-medium wp-image-250" /></a>
+
+Hi all! Happy Easter!
+
+This is going to be more of a storytelling post: light on the data analysis part and more anecdotal.
+
+Of course, being the father of a 2-year-old son, we went to an Easter egg hunt (multiple, actually) and he experienced the thrilling ritual of locating plastic egg impostors filled with distinctly un-chick-like objects. One particularly thrilling hunt we attended was the event sponsored by the local town, which likely employed thousands of eggs and was attended by hundreds of children. It was very exciting.
+
+After the hunt was over, I was looking through the eggs and couldn't help but notice the variation in how many eggs were collected of each color. Of course, this is mostly variation due to which eggs happened to still be there by the time my son picked them up, but given that the event collected donated eggs from many people and institutions, it is likely that the initial distribution of eggs was skewed. Of course, this sample is far too small to have a prayer at testing that hypothesis, but it made for an amusing bit of pondering.
+
+Anyway, it occurred to me that lining up the eggs in like color groups formed a close approximation of the column (or bar) graph that would be used to demonstrate the color variation, and was actually a more appealing and pretty way to present that information than if I were to actually make the corresponding column graph. And as I have lately been enamored with <a href="https://www.reddit.com/r/dataisbeautiful/">reddit.com/r/dataisbeautiful</a>, I wanted to share this simple yet effective and beautiful visualization with like-minded data vis buffs.
+
+[caption id="attachment_208" align="aligncenter" width="700"]<a href="http://databard.blog/wp-content/uploads/2018/04/2018.04.01.EasterEggs.jpg"><img class="size-large wp-image-208" src="http://databard.blog/wp-content/uploads/2018/04/2018.04.01.EasterEggs-1024x768.jpg" alt="" width="700" height="525" /></a> Curse the color purple for being impervious to photography.[/caption]
+
+To my surprise, I was notified a couple of hours later that the post was being removed from the page, because it did not qualify for their specifications of a data visualization. This was unexpected, as the picture that I posted was remarkably similar to the column graph that I would have made to show the same information, and I would argue that this pictorial presentation was much more beautiful.
+
+It turns out, after reading the specifications, that they only accept visualizations that were generated automatically, and they specifically exclude pictures from their material. Partly to make a point, I went ahead and generated the corresponding column graph.
+
+[expand title="Code"]
+<pre><code>colors &lt;- c("Pink", "Orange", "Yellow", "Green", "Teal", "Blue", "Purple")
+eggs &lt;- c(3, 4.5, 6, 4, 1, 4.5, 5)
+data &lt;- data.frame(color = factor(colors, levels = colors), 
+                   count = eggs)
+
+egg.colors &lt;- c(rgb(255, 128, 192, max = 255), rgb(255, 128, 64, max = 255),
+                rgb(255, 242, 0, max = 255), rgb(0, 234, 58, max = 255),
+                rgb(0, 128, 128, max = 255), rgb(0, 0, 255, max = 255), 
+                rgb(128, 0, 255, max = 255))
+
+g &lt;- ggplot(data, aes(x = color, y = count, fill = color)) +
+    geom_col() +
+    scale_fill_manual(values = egg.colors) +
+    scale_y_continuous(breaks = seq(2, 6, 2), minor_breaks = seq(1, 5, 2), expand = c(0, 0)) +
+    ggtitle("Color Distribution of Easter Eggs Found") +
+    labs(x = "") +
+    guides(fill = F,
+           axis.title.x = element_blank()) +
+    theme_Publication()
+g
+
+#ggsave(file = "figures/easteregg_colors.jpeg", g, width = 5, height = 3, dpi = 300)</code></pre>
+[/expand]
+<a href="http://databard.blog/wp-content/uploads/2018/04/2018.04.01.easteregg_colors.jpeg"><img class="aligncenter size-large wp-image-211" src="http://databard.blog/wp-content/uploads/2018/04/2018.04.01.easteregg_colors-1024x614.jpeg" alt="" width="700" height="420" /></a>
+
+I posted the new graph (which conformed to the page's standards), and based on the community response in the first couple of hours I felt like it didn't make quite as much of a stir as the original photo. However, that is a very subjective way to qualify my opinion that the picture is superior, so I would have to put in a much more concerted effort to determine whether people generally agree with me or not. I would love to hear what you guys think in the comments: which graph do you like better, and why?
+[/wptab]
+[end_wptabset]

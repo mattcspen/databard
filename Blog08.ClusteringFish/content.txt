@@ -1,0 +1,164 @@
+[wptab name='Narrative']
+
+<a href="http://databard.blog/wp-content/uploads/2018/06/Teaser.jpg"><img src="http://databard.blog/wp-content/uploads/2018/06/Teaser-1024x576.jpg" alt="" width="758" height="426" class="aligncenter size-large wp-image-347" /></a>
+
+Hi all!
+
+You may be surprised to learn that Machine Learning is a very broad term that refers to a class of methods with many different goals and many different ways to accomplish these goals. I eventually want to show an example or two of a variety of ML methods, but for now we're going to talk about Clustering!
+
+The idea behind clustering is that things that belong in a group together have similar patterns of characteristics. As a nerdy D&D example, say I measured the height and weight of 10 Gnomes, 10 Dwarves, 10 Elves, and 10 Half-Orcs, and gave you the list of measurements without telling you which race they came from, you could probably sort them into those four races pretty accurately. Gnomes and Dwarves have height ranges which are pretty distinct from all the others, so they would likely be identifiable based on height alone. On the other hand, Elves and Half-Orcs have completely overlapping height ranges (according to Pathfinder d20pfsrd, Elves are 5'6"-6'8" and Half-Orcs are 4'7"-6'10"), but Elves tend to be considerably lighter, so they can be distinguished that way. 
+
+That's what I am doing here, but instead of D&D races, I will use species of fish. I found a dataset which has several measurements of seven fish species, including height, width, weight, and three different lengths measuring the body and tail. What I wanted to do was try to cluster them based on varying levels of information: how well does the computer do if I just give it the height and length? How about if I give it all of the measurements? So on.
+
+<a href="http://databard.blog/wp-content/uploads/2018/06/True.jpg"><img src="http://databard.blog/wp-content/uploads/2018/06/True.jpg" alt="" width="487" height="385" class="aligncenter size-full wp-image-348" /></a>
+
+Here are the fish that I have, colored by species. As you can see, there is actually a pretty clear separation for the bottom two species (the "shortest"), and the top two (the "tallest") are distinct, although they run together a tad. The tough part is going to be those three species in the middle, which have highly overlapping height and length, but I'm hoping that there is a different dimension that separates them better, perhaps how their tails are shaped.
+
+First I'll try clustering them just based on these two dimensions: length and height. This will basically simulate how well a person could divide these points into clusters if asked, since it's hard for a person to consider more than two dimensions.
+
+<a href="http://databard.blog/wp-content/uploads/2018/06/Simple.jpg"><img src="http://databard.blog/wp-content/uploads/2018/06/Simple-1024x576.jpg" alt="" width="758" height="426" class="aligncenter size-large wp-image-346" /></a>
+
+This was about what I expected to happen - the bottom left cluster was easy, the division between the top two isn't quite right, it took the "bait" and divided the middle blob through that gap, and since I told the clustering algorithm it was looking for seven species, it thought the spread-out group on the bottom was actually two species. Overall, though, it did pretty well, clocking in at <strong>85.3%</strong> accuracy.
+
+So my goal here is going to try to do better at separating the three species in the middle of the length/height plot. The first thing I'll try is clustering based on all of the measurements that were given, with (almost) no modification.
+
+<a href="http://databard.blog/wp-content/uploads/2018/06/Raw.jpg"><img src="http://databard.blog/wp-content/uploads/2018/06/Raw-1024x576.jpg" alt="" width="758" height="426" class="aligncenter size-large wp-image-345" /></a>
+
+Not a big difference, unfortunately. It overcorrected the division between the top two in the other direction, and the clusters along the bottom are identical. However, it made an attempt to be smarter about the middle group, and identified two fish that look like they should be part of the crowd, but are actually just imposters. So that is a small step in the right direction, though the total accuracy actually dropped a smidgen to <strong>84.9%</strong>.
+
+My next idea was to process the measurements into ratios. After all, the normal ranges for the weight for Dwarves is very similar to the range for Half-Orcs, but the height:weight ratio is much different. So maybe some of our fish have a similar situation, where if you look just at the measurements it isn't obvious how to distinguish them, but the ratios might be more specific. So here's another attempt at clustering, using the ratios instead of raw measurements.
+
+<a href="http://databard.blog/wp-content/uploads/2018/06/Ratio.jpg"><img src="http://databard.blog/wp-content/uploads/2018/06/Ratio-1024x576.jpg" alt="" width="758" height="426" class="aligncenter size-large wp-image-344" /></a>
+
+Well, there's some good and some bad news. The bad news is that this new attempt somehow failed to notice some gaps that are pretty obvious on these scales, particularly how there are red dots at the top, middle, and bottom, and the blue dots similarly include some of the middle group, and some of the bottom. The good news is that this attempt did a surprisingly good job distinguishing the gray and purple species (on the True Species side), which none of the other attempts have been able to do. So there must be some ratio that really differentiates members of those two species. This boosted us up to a shocking (not really) accuracy of <strong>85.4%</strong>!
+
+One last try. Since the thing that the ratio did worst at was the big gaps that seem obvious when looking at the raw values for height and length in these plots, let's try including data for both the raw measurements and the ratios. Maybe that will get us the best of both worlds!
+
+<a href="http://databard.blog/wp-content/uploads/2018/06/Both.jpg"><img src="http://databard.blog/wp-content/uploads/2018/06/Both-1024x576.jpg" alt="" width="758" height="426" class="aligncenter size-large wp-image-343" /></a>
+
+Nope. If anything, this seems to be the <em>worst</em> of both worlds, since (like the raw measurement attempt) it failed to distinguish the middle groups at all and (like the ratio attempt) it still managed to think that all those fish belong to the red species, despite a pretty obvious difference in height. Interestingly, our model that included the most data got us the worst accuracy: <strong>79.9%</strong>.
+[/wptab]
+[wptab name='Technical']
+
+<a href="http://databard.blog/wp-content/uploads/2018/06/Teaser.jpg"><img src="http://databard.blog/wp-content/uploads/2018/06/Teaser-1024x576.jpg" alt="" width="758" height="426" class="aligncenter size-large wp-image-347" /></a>
+
+Hi all!
+
+I am going to do some experimentation with various Machine Learning methods. And I haven't been doing nearly enough Python recently, which is definitely the preferred language (over R) for ML stuff. I'm starting with some experimentation about Clustering!
+
+I found a nice, clean dataset which has several measurements of seven fish species, including height, width, weight, and three different lengths measuring the body and tail. Since it was a small dataset that was cleaned already, I uploaded it to my <a href="https://github.com/mattcspen/databard/tree/master/Blog08.ClusteringFish" rel="noopener" target="_blank">git repo</a> if you want to see. I was curious how much "feature selection" would alter the clustering effectiveness. So I experimented with clustering using varying levels of information: how well does the model cluster the fish if I just give it the height and length? How about if I give it all of the measurements? So on.
+
+[expand title="Code"]<pre><code>fish = pd.read_csv("data/fishcatch.csv").drop(['Unnamed: 0', 'obs', 'sex'], axis=1)
+plt.scatter(x = fish.length3, y = fish.height, c = fish.species, cmap=cm.Set1)
+plt.savefig('figures/true.png', bbox_inches='tight')
+</code></pre>[/expand]
+<br>
+
+<a href="http://databard.blog/wp-content/uploads/2018/06/True.jpg"><img src="http://databard.blog/wp-content/uploads/2018/06/True.jpg" alt="" width="487" height="385" class="aligncenter size-full wp-image-348" /></a>
+
+Here are the fish that I have, colored by species. As you can see, there is a pretty clear separation for the bottom two species (the "shortest"), and the top two (the "tallest") are distinct, although there isn't really any separation. The toughest part is going to be those three species in the middle, which have highly overlapping height and length, but I'm hoping that there is a different dimension that separates them better, perhaps how their tails are shaped.
+
+First I'll try clustering them just based on these two dimensions: length and height. This will basically simulate how well a person could divide these points into clusters if asked, since it's hard for a person to consider more than two dimensions. By the way, I'm using Agglomerative Clustering this time, which was a bit of an arbitrary decision. Perhaps another time I'll see what happens when different clustering algorithms are applied to different datasets.
+
+[expand title="Code"]<pre><code># Basically the raw measurements, only scaled
+rawfish = scale_cols(fish.drop('species', axis=1), range(0,6))
+X = rawfish.filter(items=['length3', 'height'])
+simpleagg = AgglomerativeClustering(linkage='average', n_clusters=7).fit(X)
+plt.scatter(x = fish.length3, y = fish.height, c = simpleagg.labels_, cmap=cm.Set1)
+plt.savefig('figures/simple_pred.png', bbox_inches='tight')</code></pre>[/expand]
+<br>
+
+<a href="http://databard.blog/wp-content/uploads/2018/06/Simple.jpg"><img src="http://databard.blog/wp-content/uploads/2018/06/Simple-1024x576.jpg" alt="" width="758" height="426" class="aligncenter size-large wp-image-346" /></a>
+
+This was about what I expected to happen - the bottom left cluster was easy, the division between the top two isn't quite right, it took the "bait" and divided the middle blob through that gap, and since I told the clustering algorithm it was looking for seven species, it thought the spread-out group on the bottom was actually two species. I imagine this exploration would look a lot different if I had to go through the normal procedures for guessing how many clusters I was trying to look for. Anyway, it did pretty well, clocking in at <strong>85.3%</strong> accuracy.
+
+[expand title="Discussion about Accuracy"]
+When I refer to the "Accuracy" of a clustering attempt, this is what I mean. Rather than calculating accuracy as if this was a classifier, I was more interested in how well the relationships between same-species members was preserved. Thus, I wrote the function below to evaluate all pairwise relationships between individuals to see if they had the appropriate relationship (whether they were correctly placed in the same cluster when they are the same species, or whether they were correctly placed in different clusters if they are different species). This method of assessing accuracy also prevented me from having to make a mapping between the original species and the new clusters, which wouldn't necessarily be clear. That's why the colors don't match up between the "True" plots and the "Predicted".<pre><code># This function calculates the accuracy of a classification
+# attempt by measuring the number of correct pairwise relationships
+# between individuals. 
+def cluster_accuracy(true, pred):
+    speclabels = pd.DataFrame({'idx': list(range(0, len(true))), 'species': true, 'by': 1})
+    specpairs = pd.merge(speclabels, speclabels, on='by').query('idx_x != idx_y')
+    specpairs['match'] = specpairs.species_x == specpairs.species_y 
+
+    predlabels = pd.DataFrame({'idx': list(range(0, len(pred))), 'species': pred, 'by': 1})
+    predpairs = pd.merge(predlabels, predlabels, on='by').query('idx_x != idx_y')
+    predpairs['match'] = predpairs.species_x == predpairs.species_y
+
+    success = sum(specpairs.match == predpairs.match)
+    total = predpairs.shape[0]
+    accuracy = success/total*100
+    return(accuracy)</code></pre>[/expand]
+<br>
+
+My goal moving forward is to improve the separation between the three species in the center of the length/height plot. The first thing I'll try is clustering based on all of the measurements that were given, with (almost) no modification. 
+
+[expand title="Discussion about 'Almost'"]
+I say "almost" here because using the actual raw values was a disaster no matter what I did, and it was much more successful after I scaled all of the measurements using Min-Max scaling to get all the variables to the same range. I also could have tried Z-score standardization, which some argue works better for clustering in general. Here is the function used to scale the variables in this way.<pre><code># This function is used to scale indicated variables
+# down to a range of [0, 1], using Min-Max Scaling
+def scale_cols(x, idxs):
+    othercols = [list(x)[y] for y in set(range(0, len(list(x)))) - set(idxs)]
+    scalecols = [list(x)[y] for y in idxs]
+    scalable = x[scalecols]
+    scaled = pd.DataFrame(data=preprocessing.MinMaxScaler().fit_transform(scalable),
+                            columns=scalecols)
+    all = pd.concat([x[othercols], scaled], axis=1)[list(x)]
+    return(all)
+</code></pre>[/expand]
+<br>
+
+[expand title="Code"]<pre><code>rawfish = scale_cols(fish.drop('species', axis=1), range(0,6))
+X = rawfish
+rawagg = AgglomerativeClustering(linkage='average', n_clusters=7).fit(X)
+plt.scatter(x = fish.length3, y = fish.height, c = rawagg.labels_, cmap=cm.Set1)
+plt.savefig('figures/raw_pred.png', bbox_inches='tight')</code></pre>[/expand]
+<br>
+
+<a href="http://databard.blog/wp-content/uploads/2018/06/Raw.jpg"><img src="http://databard.blog/wp-content/uploads/2018/06/Raw-1024x576.jpg" alt="" width="758" height="426" class="aligncenter size-large wp-image-345" /></a>
+
+Not a big difference, unfortunately. It overcorrected the division between the top two in the other direction, and the clusters along the bottom are identical. However, it made an attempt to be smarter about the middle group, and identified two fish that look like they should be part of the crowd, but are actually just imposters. So that is a small step in the right direction, though the total accuracy actually dropped a smidgen to <strong>84.9%</strong>.
+
+My next idea was to process the measurements into ratios. If the other raw measurements did nothing to distinguish the central groups, then calculating these ratios should preserve some meaningful relationships between the measurements that will hopefully do a better job distinguishing members of different species. So here's another attempt at clustering, using the ratios instead of raw measurements.
+
+[expand title="Code"]<pre><code># More strategic feature encoding
+# Convert all measurements to ratios of the full length
+fishratio = pd.DataFrame({  'length'    : fish.length3,
+                            'bodylenR'  : fish.length1/fish.length3,
+                            'taillenR'  : (fish.length3 - fish.length1)/fish.length3,
+                            'maintailR' : (fish.length2 - fish.length1)/fish.length3,
+                            'tailtrailR': (fish.length3 - fish.length2)/fish.length3,
+                            'heightR'   : fish.height/fish.length3,
+                            'widthR'    : fish.width/fish.length3,
+                            'weightR'   : fish.weight/fish.length3 })
+fishratio = fishratio[['length', 'bodylenR', 'taillenR', 'maintailR', 'tailtrailR', 'heightR', 'widthR', 'weightR']]
+ratiofish = scale_cols(fishratio, range(0,8))
+X = ratiofish
+ratioagg = AgglomerativeClustering(linkage='average', n_clusters=7).fit(X)
+plt.scatter(x = fish.length3, y = fish.height, c = ratioagg.labels_, cmap=cm.Set1)
+plt.savefig('figures/ratio_pred.png', bbox_inches='tight')</code></pre>[/expand]
+<br>
+
+<a href="http://databard.blog/wp-content/uploads/2018/06/Ratio.jpg"><img src="http://databard.blog/wp-content/uploads/2018/06/Ratio-1024x576.jpg" alt="" width="758" height="426" class="aligncenter size-large wp-image-344" /></a>
+
+Well, there's some good and some bad news. The bad news is that this new attempt somehow failed to notice some gaps that are pretty obvious on these scales, particularly how there are red dots at the top, middle, and bottom, and the blue dots similarly include some of the middle group, and some of the bottom. The good news is that this attempt did a surprisingly good job distinguishing the gray and purple species (on the True Species side), which none of the other attempts have been able to do. So there must be some ratio that really differentiates members of those two species. Overall, we see a mild improvement of accuracy up to <strong>85.4%</strong>.
+
+One last try. Since the thing that the ratio did worst at was the big gaps that seem obvious when looking at the raw values for height and length in these plots, let's try including data for both the raw measurements and the ratios. Maybe that will get us the best of both worlds!
+
+[expand title="Code"]<pre><code># bothfish includes scaled raw measurements and scaled ratios
+bothfish = pd.concat([rawfish, ratiofish], axis=1)
+bothfish = bothfish[['length', 'weight', 'height', 'width',          # Core measurements
+                     'length1', 'length2',                           # More specific lengths
+                     'bodylenR', 'taillenR', 'maintailR',            # Measurement ratios
+                     'tailtrailR', 'heightR', 'widthR', 'weightR']]
+X = bothfish
+bothagg = AgglomerativeClustering(linkage='average', n_clusters=7).fit(X)
+plt.scatter(x = fish.length3, y = fish.height, c = bothagg.labels_, cmap=cm.Set1)
+plt.savefig('figures/both_pred.png', bbox_inches='tight')</code></pre>[/expand]
+<br>
+
+<a href="http://databard.blog/wp-content/uploads/2018/06/Both.jpg"><img src="http://databard.blog/wp-content/uploads/2018/06/Both-1024x576.jpg" alt="" width="758" height="426" class="aligncenter size-large wp-image-343" /></a>
+
+Nope. If anything, this seems to be the <em>worst</em> of both worlds, since (like the raw measurement attempt) it failed to distinguish the middle groups at all and (like the ratio attempt) it still managed to think that all those fish belong to the red species, despite a pretty obvious difference in height. Interestingly, our model that included the most data got us the worst accuracy: <strong>79.9%</strong>.
+
+[/wptab]
+[end_wptabset]

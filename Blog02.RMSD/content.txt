@@ -1,0 +1,244 @@
+[wptab name='Narrative']
+
+<a href="http://databard.blog/wp-content/uploads/2017/12/teaser.rmsd_-e1522722627384.gif"><img src="http://databard.blog/wp-content/uploads/2017/12/teaser.rmsd_-300x300.gif" alt="" width="300" height="300" class="aligncenter size-medium wp-image-242" /></a>
+
+Hello! The next couple of weeks are going to be a bit crazy due to my holiday plans, so I'm likely not going to post as much as I'd eventually like to (I'm off to a good start, right?), but I have this one at least! This post is going to be a bit different than the last one because I need to catch you guys up on what I'm even doing and why. So this Narrative is going to be kind of an overview of the technique. If you already know generally what predictive modelling is, there is some deeper discussion in the Technical post.
+
+Predictive Modelling is the process of using data to predict what is going to happen. Weather forecasting is an example, though I think this works a bit differently than what I'm going to do, since a forecast is mostly based on our understanding of physics rather than historical data. But generally a model is created ("model" means representing how we think a real world phenomenon works in terms that we, or a computer, can understand), then we tell the model details about today's weather, and it will tell us what it thinks the weather will be like tomorrow. The <em>model</em> makes a <em>prediction</em> which we can then use to make decisions, like whether it's a good idea or a bad idea to go swimming.
+
+Here I'm going to use the measurement of people's hand length to try to predict how tall they are. Realistically, this isn't a very useful predictive model because if you get close enough to someone to measure their hand, you're also close enough to measure their height. So there would never really be a need to predict height from hand length. Disregarding that, I'm using this example to demonstrate some thoughts that I've had about predictive modelling.
+
+<a href="http://databard.blog/wp-content/uploads/2017/12/1.initial.plot_-1.jpeg"><img class="aligncenter size-medium wp-image-188" src="http://databard.blog/wp-content/uploads/2017/12/1.initial.plot_-1.jpeg" alt="" width="500" height="500" /></a>
+
+Here we can see that there is a very strong connection between hand size and height - for most of the people here if their hand is one inch bigger, they are ~8-10" taller. This connection makes hand size a good "predictor" of height. If you told me your hand was 8 inches long, I would guess that you're about 5'7" tall, and according to this dataset I would be pretty close!
+
+More specifically, these two attributes (hand size and height) have a close <em>linear</em> relationship, so we can calculate an equation for a line that <em>models</em> this relationship. There is a really common equation for how to calculate the best line using this data - here's what it comes up with:
+
+<a href="http://databard.blog/wp-content/uploads/2017/12/2.fit_-1.jpeg"><img class="aligncenter size-medium wp-image-189" src="http://databard.blog/wp-content/uploads/2017/12/2.fit_-1.jpeg" alt="" width="500" height="500" /></a>
+
+Well, that's not a very good line! It completely misses the obvious line that most of the points follow. Why did that happen?
+
+This is actually why I wanted to show this example. The reason the fit line doesn't follow the points very well is because it's trying to account for those really weird people out to the sides - the girl with the really tiny hands and the boy with the enormous ones.
+
+<img class="aligncenter wp-image-120 size-medium" src="http://databard.blog/wp-content/uploads/2017/12/Comic-265x300.jpg" alt="" width="265" height="300" />
+
+So let's back up a second and talk about how you decide where that line is. The "best fit" line is the one that minimizes the total vertical distance between the line and all of the points. Look at all of the vertical lines in the figure below. We'll call these the "error" lines, because it shows how wrong our prediction would be for each of these data points. Look at the point on the left - if we showed our model that person with 5.5" hands, it would estimate them to be around 4'3" tall, but that is <strong>way</strong> off from her actual height of 5'1". This results in a very large error bar.
+
+<a href="http://databard.blog/wp-content/uploads/2017/12/3.fit_.errors-1.jpeg"><img class="aligncenter size-medium wp-image-190" src="http://databard.blog/wp-content/uploads/2017/12/3.fit_.errors-1.jpeg" alt="" width="500" height="500" /></a>
+
+As wrong as we were with this line, imagine what it would look like if our fit line actually followed the trend we see in the middle. The predictions for these outliers would be off by at least a foot! That's why the line is pulled to be closer to these people.
+
+Pretty much no matter what we do here, we're going to be dead wrong about our predictions about these extreme outliers. So I say - why are we trying so hard to make the model that does the best job for <em>all</em> of our data points, when it sacrifices the accuracy of everything? Let's zoom in on the "core" of our data - everything but the outliers.
+
+<a href="http://databard.blog/wp-content/uploads/2017/12/4.fit_.errors.zoom_.jpeg"><img class="aligncenter size-medium wp-image-191" src="http://databard.blog/wp-content/uploads/2017/12/4.fit_.errors.zoom_.jpeg" alt="" width="500" height="500" /></a>
+
+Our model so far isn't terrible, but it's not great either. The points in the middle, right around 8" hand length, are pretty good, but everything else is off by an inch or two. We can do a lot better than this. And like I said earlier, I would rather have these predictions be good and be <strong>extremely</strong> wrong about those outliers, rather than have these ones be okay and just be <strong>very</strong> wrong about the outliers. I'm going to remove the outliers and recalculate the best fit line.
+
+<a href="http://databard.blog/wp-content/uploads/2017/12/5.nofit_.errors.zoom_.jpeg"><img class="aligncenter size-medium wp-image-192" src="http://databard.blog/wp-content/uploads/2017/12/5.nofit_.errors.zoom_.jpeg" alt="" width="500" height="500" /></a>
+
+Wow! Look how much better that is! There are still a few weird cases where the prediction isn't very good, but for over half of these examples the error is under 1". And remember, we're assuming that we know the length of people's hands, but we don't know their height. So while it makes sense to say "This model predicts the height of people with hands between 6.5 and 9 inches long", we can't really say "This model predicts the height of people whose height can be effectively predicted by their hand length". That's essentially what we would be doing if we remove these new two points with the longest error bars, especially the girl with 8.4" hands.
+
+So base on these observations, I'm going to try something a little bit different. Pretty much anytime you make a predictive model you split the data into a training set, which you use to make the model (in this case, calculate this line), and a testing set. For the testing set, we pretend that we don't know the height, and after we train the model we see how accurate it is at predicting the their heights. This allows us to validate our model by measuring the RMSD (essentially, the combined height of the error lines - we want to make this as small as we can) of the testing data.
+
+The thing I'm going to do differently is eliminate one-by-one the training data points that are furthest from average hand length (7.85"). So the first points to go are going to be those extreme outliers, which we've already seen will improve the model accuracy. After those are gone we'll have to see what happens.
+
+<a href="http://databard.blog/wp-content/uploads/2017/12/all.rmsd_-1.gif"><img src="http://databard.blog/wp-content/uploads/2017/12/all.rmsd_-1.gif" alt="" width="666" height="666" class="aligncenter size-full wp-image-195" /></a>
+
+Like we expected, the error (RMSD) drops like a rock after eliminating the first few outliers. We see the error gradually rising after the initial drop, making it pretty clear that we want to retain as much "reasonable" data as we can to produce the best model. I'll show you why in a minute. First let's look at the first bit in slow-motion:
+
+<img class="aligncenter size-full wp-image-117" src="http://databard.blog/wp-content/uploads/2017/12/descent.rmsd_-1.gif" alt="" width="666" height="666" />
+
+Look at how dramatically the slope of the line changes in the first few frames (remember that the two extreme outliers are outside of this frame, so you don't see their error lines disappear when they are ignored). The line quickly changes from being way off to closely resembling the pattern seen in this central core of data. We get our best model after removing the 4 largest outliers from the training set. Note that this means we are creating a model that is tailored to providing good predictions for "close to average" people.
+
+To wrap things up, I said I would talk about why the model gets worse the more "outliers" we remove (after the first couple, we really can't count them as <em>outliers</em>, just <em>furthest from average</em>). Here's a slow-motion gif of some of the middle attempts.
+
+<img class="aligncenter size-full wp-image-116" src="http://databard.blog/wp-content/uploads/2017/12/ascent.rmsd_-1.gif" alt="" width="666" height="666" />
+
+Notice how there are still some error lines outside of the lines that disappear in this section. Those are the data in the testing set - those lines are plotted in green (or at least they are supposed to be green - my gif-maker messed with some of the colors). They don't get eliminated as we remove outliers because remember that we're pretending we don't know how tall those people are at the time that the model is generated.
+
+As we eliminate more and more of the training data, the best fit line does a better and better job at modelling the <strong>average</strong> person, and if all we wanted to be able to do was predict the height of somebody with about 8 inch hands, we could do that really well. But many of our testing cases come from outside of the middle average area, so even though the model is very good at the middle guys, it ignores the guys on the outside. Watch the error bars for the boys on the right, with hands a little over 8.5": the later iterations of the model (built with less training data) often result in the line getting further away from these guys. This hurts the overall accuracy of the model when testing it against the test data. So that's why it's important to keep as much data as possible in your training set in order to make a useful predictor.
+
+That's all for today! I have some more discussion about this topic, so I'm going to revisit this idea at some point by applying some of these ideas to a more useful situation. I'd love to hear your thoughts about this discussion, so leave a comment or send me a message!
+
+[/wptab]
+[wptab name='Technical']
+
+<a href="http://databard.blog/wp-content/uploads/2017/12/teaser.rmsd_-e1522722627384.gif"><img src="http://databard.blog/wp-content/uploads/2017/12/teaser.rmsd_-300x300.gif" alt="" width="300" height="300" class="aligncenter size-medium wp-image-242" /></a>
+
+Hello! The next couple of weeks are going to be a bit crazy due to my holiday plans, so I'm likely not going to post as much as I'd eventually like to (I'm off to a good start, right?), but I have this one at least! This technical post describes some of my thoughts about some of the specifics of predictive modelling in such a way that assumes that you know something about modelling. If you have little experience with the subject, I recommend reading the Narrative version for an overview of some of the basics before diving into my thoughts!
+
+These thoughts came up when I was poking around with a certain dataset with people's measurements, including hand length and height. As you can see in the image below, there is a very strong correlation between them (at least in this sample). And conveniently the relationship is obviously linear, which eliminates the need for some more complex regression techniques that would account for more complicated relationships. Here I use the measurement of people's hand length to try to predict how tall they are. Realistically, this isn't a very useful predictive model because if you get close enough to someone to measure their hand, you're also close enough to measure their height. So there would never really be a need to predict height from hand length. Disregarding that, while I was working on the linear model, I had some thoughts that would make some interesting discussion.
+
+[expand title="Code"]
+<pre><code># Just a smidge of data cleaning
+statdata &lt;- read.csv('stature-hand-foot.csv')
+colnames(statdata) &lt;- c('gender', 'height', 'hand', 'foot')
+data &lt;- statdata %&gt;%
+    mutate(sex    = ifelse(gender == 1, 'male', 'female'),
+           height = height / 304.8,
+           hand   = hand / 25.4) %&gt;%
+    select(-gender, -foot)
+
+g &lt;- ggplot(data = data, aes(hand, height)) + 
+    geom_point(aes(color = sex), siz e= 0.5) +
+
+    scale_y_continuous(breaks = seq(4, 7, 0.5), labels = c("4'0\"", "4'6\"", "5'0\"", "5'6\"", "6'0\"", "6'6\"", "7'0\"")) +
+    labs(x = 'Hand Size (in)', y = 'Height') +
+    scale_color_manual(values = c("#ED58BD", "#34B0C2")) +
+
+    theme_Publication() +
+    theme(legend.justification = c(1, 0), legend.position = c(0.95, 0.05))
+g
+#ggsave(file= "figures/1.initial.plot.jpeg", g, width = 5, height = 5, dpi = 200)</code></pre>
+[/expand]
+<a href="http://databard.blog/wp-content/uploads/2017/12/1.initial.plot_-1.jpeg"><img class="aligncenter size-medium wp-image-188" src="http://databard.blog/wp-content/uploads/2017/12/1.initial.plot_-1.jpeg" alt="" width="500" height="500" /></a>
+
+Here we can see that there is a very strong connection between hand size and height - for most of the people here if their hand is one inch bigger, they are ~8-10" taller. This connection makes hand size a good predictor of height. And like I said, the relationship is obviously linear. So I went ahead and calculated the regression line, and I got the equation <code>height = 0.5122 * hand.length + 1.4805</code>. Visualizing this regression line with the data points, here is what we get:
+
+[expand title="Code"]
+<pre><code># Calculate regression using entire dataset
+hmod &lt;- train(height ~ hand, data, method = "lm") summary(hmod) # Coefficients: # Estimate Std. Error t value Pr(&gt;|t|)    
+# (Intercept)   1.4805     0.1819   8.141 1.27e-13 ***
+# hand          0.5122     0.0231  22.172  &lt; 2e-16 ***
+
+bestfit.int &lt;- summary(hmod)$coefficients['(Intercept)', 'Estimate']
+bestfit.slope &lt;- summary(hmod)$coefficients['hand', 'Estimate']
+
+g2 &lt;- g + 
+    geom_abline(slope = bestfit.slope, intercept = bestfit.int) +
+    geom_point(aes(color = sex), size = 0.5) 
+g2
+#ggsave(file = "figures/2.fit.jpeg", g2, width = 5, height = 5, dpi = 200)</code></pre>
+[/expand]
+<a href="http://databard.blog/wp-content/uploads/2017/12/2.fit_-1.jpeg"><img class="aligncenter size-medium wp-image-189" src="http://databard.blog/wp-content/uploads/2017/12/2.fit_-1.jpeg" alt="" width="500" height="500" /></a>
+
+As you can see, the regression line misses the obvious trend that most of the points follow. I had to investigate why this happened.
+
+This is actually why I wanted to show this example. The regression line is being heavily influenced by the extreme outliers - the girl with the really tiny hands and the boy with the enormous ones. These couple of strange points ruin the accuracy of the regression for the majority of the rest of the points.
+
+<img class="aligncenter wp-image-120 size-medium" src="http://databard.blog/wp-content/uploads/2017/12/Comic-265x300.jpg" alt="" width="265" height="300" />
+
+So let's back up a second and talk about how the regression line is calculated. The regression line, or "best fit" line, is the one that minimizes the total error between the line and the actual points. To demonstrate this, I visualized the error lines (black vertical lines) in the figure below. Each line is an indication of how wrong our prediction would be for each of these data points, based on the regression line. Look at the point on the left - if we attempted to predict the height of a person with 5.5" hands, we would estimate them to be around 4'3" tall. This is <strong>way</strong> off from her actual height of 5'1". Thus, a very large error bar.
+
+[expand title="Code"]
+<pre><code>data$predicted &lt;- predict(hmod, newdata = data)
+coords &lt;- data %&gt;% 
+    mutate(grp = row_number()) %&gt;% 
+    select(grp, hand, height, predicted) %&gt;%
+    rename(actual = height) %&gt;%
+    gather(h.type, height, actual, predicted) 
+
+g3 &lt;- g + geom_line(data=coords, aes(hand, height, group = grp), size = 0.25) +
+    geom_abline(slope = bestfit.slope, intercept = bestfit.int) +
+    geom_point(aes(color = sex), size = 0.5) 
+g3
+#ggsave(file = "figures/3.fit.errors.jpeg", g3, width = 5, height = 5, dpi = 200)</code></pre>
+[/expand]
+<a href="http://databard.blog/wp-content/uploads/2017/12/3.fit_.errors-1.jpeg"><img class="aligncenter size-medium wp-image-190" src="http://databard.blog/wp-content/uploads/2017/12/3.fit_.errors-1.jpeg" alt="" width="500" height="500" /></a>
+
+As wrong as we were with this line, imagine what it would look like if our fit line actually followed the trend we see in the middle. The predictions for these outliers would be off by at least a foot! That's why the line is pulled to be closer to these people - to reduce the average error in the predictions.
+
+Pretty much no matter what we do here, we're going to be dead wrong when predicting these extreme outliers. So I say - why are we trying so hard to make the model that does the best job for <em>all</em> of our data points, when it sacrifices the accuracy of everything? Let's zoom in on the "core" of our data - everything but the outliers.
+
+[expand title="Code"]
+<pre><code>g4 &lt;- ggplot(data = data, aes(hand, height)) +
+    geom_line(data = coords, aes(hand, height, group = grp), size = 0.25) +
+    geom_abline(slope = bestfit.slope, intercept = bestfit.int) +
+    geom_point(aes(color = sex), size = 0.5) +
+
+    # Reduced figure limits
+    scale_x_continuous(limits = c(6.75, 9), expand = c(0, 0)) +
+    scale_y_continuous(limits = c(4.75, 6.25), expand = c(0, 0), 
+                       breaks=seq(4, 7, 0.5), labels=c("4'0\"", "4'6\"", "5'0\"", "5'6\"", "6'0\"", "6'6\"", "7'0\"")) +
+    labs(x = 'Hand Size (in)', y = 'Height') +
+    scale_color_manual(values = c("#ED58BD", "#34B0C2")) +
+
+    theme_Publication() +
+    theme(legend.justification = c(1, 0), legend.position = c(0.95, 0.05))
+g4
+#ggsave(file = "figures/4.fit.errors.zoom.jpeg", g4, width = 5, height = 5, dpi = 200)</code></pre>
+[/expand]
+<a href="http://databard.blog/wp-content/uploads/2017/12/4.fit_.errors.zoom_.jpeg"><img class="aligncenter size-medium wp-image-191" src="http://databard.blog/wp-content/uploads/2017/12/4.fit_.errors.zoom_.jpeg" alt="" width="500" height="500" /></a>
+
+Our model so far isn't terrible, but it's not great either. The points in the middle, right around 8" hand length, are represented decently, but everything else is off by at least an inch or two. We can do a lot better than this. And like I said earlier, I would rather have these predictions be good and be <strong>extremely</strong> wrong about the outliers, rather than have these ones be okay and just be <strong>very</strong> wrong about the outliers. To accomplish this, I'm going to remove the outliers and recalculate the best fit line. And while I'm at it, I'm going to randomly separate my data into a training and testing dataset. I will calculate my new regression line based on the training dataset of 122 people, and then use that to predict the heights of the testing dataset (33 people).
+
+[expand title="Code"]
+<pre><code># Generate training and testing dataset for the ".no" (no outlier) attempt
+# Train another model.
+data.no &lt;- data[data$hand &gt; 6.3 &amp; data$hand &lt; 9.4,]
+outliers &lt;- data[data$hand &lt;= 6.3 | data$hand &gt;= 9.4,]
+
+set.seed(123)
+train_idx &lt;- sample(seq_len(nrow(data.no)), nrow(data.no) * .8)
+train &lt;- data.no[train_idx,]
+test &lt;- rbind(data.no[-train_idx,], outliers)
+paste("Train size:", nrow(train), "Test size:", nrow(test))
+hmod.no &lt;- train(height ~ hand , train, method = "lm") summary(hmod.no) # Coefficients: # Estimate Std. Error t value Pr(&gt;|t|)    
+# (Intercept)  0.42384    0.14167   2.992  0.00337 ** 
+# hand         0.64692    0.01808  35.788  &lt; 2e-16 ***</code></pre>
+[/expand]
+This new model uses the equation <code>height = 0.64692 * hand.length + 0.42384</code>, which is quite a bit different than the original equation. Let's see how it looks:
+
+[expand title="Code"]
+<pre><code>bestfit.int &lt;- summary(hmod.no)$coefficients['(Intercept)', 'Estimate']
+bestfit.slope &lt;- summary(hmod.no)$coefficients['hand', 'Estimate']
+
+data$predicted &lt;- predict(hmod.no, newdata = data) # Calculate the average error over the core population data %&gt;% filter(hand &gt; 6, hand &lt; 9) %&gt;%
+    mutate(diff = abs(height - predicted)) %&gt;%
+    summarize(avg = mean(diff))
+# 0.05 feet ~ 0.6 inches
+
+coords &lt;- data %&gt;% 
+    mutate(grp = row_number()) %&gt;% 
+    select(grp, hand, height, predicted) %&gt;%
+    rename(actual = height) %&gt;%
+    gather(h.type, height, actual, predicted) 
+
+g5 &lt;- ggplot(data = data, aes(hand, height)) +
+    geom_line(data = coords, aes(hand, height, group = grp), size = 0.25) +
+    geom_abline(slope = bestfit.slope, intercept = bestfit.int) +
+    geom_point(aes(color = sex), size = 0.5) +
+
+    # Reduced figure limits
+    scale_x_continuous(limits = c(6.75, 9), expand = c(0, 0)) +
+    scale_y_continuous(limits = c(4.75, 6.25), expand = c(0, 0), 
+                       breaks = seq(4, 7, 0.5), labels = c("4'0\"", "4'6\"", "5'0\"", "5'6\"", "6'0\"", "6'6\"", "7'0\"")) +
+    labs(x = 'Hand Size (in)', y = 'Height') +
+    scale_color_manual(values = c("#ED58BD", "#34B0C2")) +
+
+    theme_Publication() +
+    theme(legend.justification = c(1, 0), legend.position = c(0.95, 0.05))
+g5
+#ggsave(file = "figures/5.nofit.errors.zoom.jpeg", g5, width = 5, height = 5, dpi = 200)</code></pre>
+[/expand]
+<a href="http://databard.blog/wp-content/uploads/2017/12/5.nofit_.errors.zoom_.jpeg"><img class="aligncenter size-medium wp-image-192" src="http://databard.blog/wp-content/uploads/2017/12/5.nofit_.errors.zoom_.jpeg" alt="" width="500" height="500" /></a>
+
+Wow! Look how much better that is! There are still a few weird cases where the prediction isn't very good, but for over half of these examples the prediction is with 1" of the actual value. And remember, we're assuming that we know the length of people's hands, but we don't know their height. So while it makes sense to say "This model predicts the height of people with hands between 6.5 and 9 inches long", we can't really say "This model predicts the height of people whose height can be effectively predicted by their hand length". That's essentially what we would be doing if we remove these new two points with the longest error bars, especially the girl with 8.4" hands. Though actually now that I think about it, it would be a reasonable argument to remove outliers based on gender-specific ranges. Both of those points with the largest error bars are well outside of the normal range of hand size for their gender, so that would actually work to identify and remove them before running the prediction.
+
+So based on these observations, I'm going to try something a little bit different. I am going to similarly separate my data into a training and testing set, except this time I'm going to leave in the extreme outliers (note that I made sure they ended up in the training set). The thing I'm going to do differently is iteratively eliminate the training data points that are furthest from average hand length (7.85"). So the first points to go are going to be those extreme outliers, which we've already seen will improve the model accuracy. After those are gone we'll have to see how additional omissions affect the accuracy of predicting the test dataset.
+
+[expand title="Code"]
+<pre><code>The generation of the gif below was quite complicated. 
+To see the code for it, please refer to my github repository.
+https://github.com/mattcspen/databard</code></pre>
+[/expand]
+<a href="http://databard.blog/wp-content/uploads/2017/12/all.rmsd_-1.gif"><img src="http://databard.blog/wp-content/uploads/2017/12/all.rmsd_-1.gif" alt="" width="666" height="666" class="aligncenter size-full wp-image-195" /></a>
+
+Like we expected, the error (RMSD over the testing dataset) drops like a rock after eliminating the first few outliers. We see the error gradually rising after the initial drop, making it pretty clear that we want to retain as much "reasonable" data as we can to produce the best model. I'll discuss this in a minute. First let's look at the first bit in slow-motion:
+
+<img class="aligncenter size-full wp-image-117" src="http://databard.blog/wp-content/uploads/2017/12/descent.rmsd_-1.gif" alt="" width="666" height="666" />
+
+Look at how dramatically the slope of the line changes in the first few frames (remember that the two extreme outliers are outside of this frame, so you don't see their error lines disappear when they are ignored). The line quickly changes from being way off to closely resembling the pattern seen in this central core of data. We get our best model after removing the 4 largest outliers from the training set. Note that this means we are creating a model that is tailored to providing good predictions for "close to average" people.
+
+To wrap things up, I said I would talk about why the model gets worse the more "outliers" we remove (after the first couple, we really can't count them as <em>outliers</em>, just <em>furthest from average</em>). Here's a slow-motion gif of some of the middle attempts.
+
+<img class="aligncenter size-full wp-image-116" src="http://databard.blog/wp-content/uploads/2017/12/ascent.rmsd_-1.gif" alt="" width="666" height="666" />
+
+Notice how there are still some error lines outside of the lines that disappear in this section. Those are the data in the testing set - those lines are plotted in green (or at least they are supposed to be green - some of the colors were lost in the process of combining images into the gif). They don't get omitted, as we are only removing points from the training dataset.
+
+As we eliminate more and more of the training data, the regression line does a better and better job at modelling the <strong>average</strong> person, and if all we wanted to be able to do was predict the height of somebody with about 8 inch hands, we could do that really well. But many of our testing cases come from outside of the middle average area, so even though the model is very good at the average points, it ignores the guys on the outside. Watch the error bars for the boys on the right, with hands a little over 8.5": the later iterations of the model (built with less training data) often result in a larger error for these points. This hurts the overall accuracy of the model when testing it against the test data. So that's why it's important to keep as much data as possible in your training set in order to make a useful predictor.
+
+That's all for today! I have some more discussion about this topic, so I'm going to revisit this idea at some point by applying some of these ideas to a more useful situation. I'd love to hear your thoughts about this discussion, so leave a comment or send me a message!
+
+[/wptab]
+[end_wptabset]

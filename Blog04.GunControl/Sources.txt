@@ -1,0 +1,18 @@
+Sources:
+
+Gun Law Circle Chart:
+http://www.crimadvisor.com/data/Brady-State-Scorecard-2014.pdf
+(see the "Download Full Data Set" button on page 12)
+
+Gun Homicides Around the World Bar Charts:
+https://en.wikipedia.org/wiki/List_of_countries_by_intentional_homicide_rate
+https://en.wikipedia.org/wiki/The_World_Factbook_list_of_developed_countries
+
+Gun Deaths/Murders By State Line Graphs:
+https://en.wikipedia.org/wiki/List_of_countries_by_intentional_homicide_rate
+https://en.wikipedia.org/wiki/Suicide_in_the_United_States
+(Restrictiveness defined by Brady Scores http://www.crimadvisor.com/data/Brady-State-Scorecard-2014.pdf )
+
+Guns By State Maps:
+https://www.cbsnews.com/pictures/gun-ownership-rates-by-state/
+http://demographicdata.org/facts-and-figures/gun-ownership-statistics/

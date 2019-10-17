@@ -1,0 +1,416 @@
+[wptab name='Narrative']
+
+<a href="http://databard.blog/wp-content/uploads/2018/03/TeaserPic-2.jpg"><img src="http://databard.blog/wp-content/uploads/2018/03/TeaserPic-2-300x205.jpg" alt="" width="300" height="205" class="aligncenter size-medium wp-image-260" /></a>
+
+Hello Friends!
+
+Surprisingly, having a baby takes up a lot of time and energy, but after a longer-than-expected break, I am back! And hopefully this post will make up for the long wait!
+
+As you probably know, the gun control debate is one of the hottest issues of our time. One would think that with so much data being collected and studied, the evidence would clarify what is the best way to approach gun control. However, the debate has raged on for the better part of a century with little progress. So in this blog I set out to figure out why.
+
+To be clear, this post is not meant to support any particular argument for or against gun control - this is a data science and visualization blog, not a political one. I'm making a point about the role that data sci/vis plays in this debate, and how this role can be abused.
+
+In my research I came across an explanation that is not what I expected. A big part of the problem is that there are so many ways that data can be “massaged” and treated differently to produce very different results. It's easy for supporters of different arguments to generate visualizations that support their point.
+
+That was my impression from what I saw in my research. So I set out to see if I could demonstrate it, by using the same or similar data to support opposite arguments. What I found is that much of the time, just a tiny tweak in the process of making a graph completely changes it. Let me show you what I mean.
+
+First, I looked at gun homicides. Right off the bat I made a graph showing the countries with the highest murder rate. Now I'm not sure if I came up with this myself or if I've seen this strategy before, but it occurred to me that some people might not consider it fair to compare the USA to undeveloped and underdeveloped countries. So I found an official list of "developed" countries and re-generated the graph using only these countries.
+
+After generating these graphs, I added some radical rhetoric that might accompany such graphs. This is essentially just a fear-mongering way of pointing out the interesting part of the graph.
+
+<a href="http://databard.blog/wp-content/uploads/2018/03/BarCharts.jpg"><img class="aligncenter size-large wp-image-180" src="http://databard.blog/wp-content/uploads/2018/03/BarCharts-1024x541.jpg" alt="" width="700" height="370" /></a>
+
+Recall, these two graphs were made using the <strong>exact same</strong> data and the <strong>exact same</strong> procedure, the only difference being the decision that USA should only be compared to developed countries.
+
+The graphs tell very different stories, but is either of them <strong>wrong</strong>? Maybe it makes sense to limit the comparison to just USA and other developed countries ... or maybe that decision was made because it made the results support the author's views.
+
+For my second pair of visualizations, I looked at gun violence in various United States, but I had the choice for what I used to indicate the level of gun violence. A friend suggested I investigate this, as the inclusion or exclusion of suicides is a tactic they have seen to influence the shape of the visualization. So first, I generated a graph that includes both homicides and suicides in the calculation. Then I used only the number of gun homicides to represent gun violence.
+
+<a href="http://databard.blog/wp-content/uploads/2018/03/LineCharts-1.jpg"><img class="aligncenter size-large wp-image-182" src="http://databard.blog/wp-content/uploads/2018/03/LineCharts-1-1024x709.jpg" alt="" width="700" height="485" /></a>
+
+Notice how big of a difference suicides make when depicting the level of gun violence. Note that "Gun Deaths" should really include other things like accidental shootings, but for this vis I just used homicides and suicides. That's one of the tricky things about a label like "Gun Deaths" - if you don't think critically, it is easy to assume that the only way a gun causes deaths is through murders, where in most states less than half of gun deaths are caused by malicious intent (towards others, at least).
+
+Ignoring the somewhat misleading label of "Gun Deaths", both of these graphs have some valid points. The left graph shows that gun control legislation has a pretty clear effect on the number of "Gun Deaths", though it would be more honest of this visualization to split it up into types of "Gun Deaths" and show that the greatest effect is in the reduction of gun-assisted suicides. The right graph demonstrates the puzzling point that gun murder rates are, in fact, very similar, even when comparing the states with the most and least restrictive laws. Or at least that appears to be the case when the vis is generated using this data set, which is another potential concern when generating such graphs.
+
+Finally, how could we talk about gun control without showing a map of the United States? This pair of visualizations demonstrates how starting with a different data set can drastically affect the outcome.
+
+I set off with the general goal of showing which states have the most guns, and I came across two different ways that this might be accomplished. The first map shows the number of registered guns in each state. Then I did the same thing, but this time the map shows gun ownership rates by state.
+
+<a href="http://databard.blog/wp-content/uploads/2018/03/Maps-1.jpg"><img class="aligncenter size-large wp-image-183" src="http://databard.blog/wp-content/uploads/2018/03/Maps-1-1024x944.jpg" alt="" width="700" height="645" /></a>
+
+The intent of these two maps may both be to show the popularity of guns in each state, but the choice of data alters things drastically, and for some good reasons! Part of the discrepancy is likely that a gun owner can have multiple registered guns. I believe the most influential factor in this case is the fact that the gun ownership data was collected using an anonymous, volunteer-based survey system, while registering guns is a much more official process. The top map makes Wyoming look like a major outlier as far as gun popularity goes, but in bottom map it isn't even in the top 5 states. Perhaps even more surprising is Idaho, which changes from being in the <strong>top 5</strong> most <em>guns</em> per capita to the <strong>bottom 5</strong> most <em>gun owners</em> per capita! (The whole one person owning many guns may affect this, but surely not <em>that</em> much.) Seeing these two maps next to each other makes it clear that registered guns and gun ownership do <strong>not</strong> measure the same thing, and the discrepancies make it very difficult to make a clear interpretation of either data set.
+
+That's all for now! If nothing else, I hope that you have an increased awareness of how data can be "massaged" to alter the story it tells. Please be critical of visualizations before basing important decisions on them. Just because data is presented in a nice graph doesn't mean it is true, or that it tells the full story.
+
+[/wptab]
+
+[wptab name='Technical']
+
+<a href="http://databard.blog/wp-content/uploads/2018/03/TeaserPic-2.jpg"><img src="http://databard.blog/wp-content/uploads/2018/03/TeaserPic-2-300x205.jpg" alt="" width="300" height="205" class="aligncenter size-medium wp-image-260" /></a>
+
+Hello Friends!
+
+Surprisingly, having a baby takes up a lot of time and energy, but after a longer-than-expected break, I am back! And hopefully this post will make up for the long wait!
+
+As you probably know, the gun control debate is one of the hottest issues of our time. One would think that with so much data being collected and studied, the evidence would clarify what is the best way to approach gun control. However, the debate has raged on for the better part of a century with little progress. So in this blog I set out to figure out why.
+
+To be clear, this post is not meant to support any particular argument for or against gun control - this is a data science and visualization blog, not a political one. I'm making a point about the role that data sci/vis plays in this debate, and how this role can be abused.
+
+In my research I came across an explanation that is not what I expected. A big part of the problem is that there are so many ways that data can be “massaged” and treated differently to produce very different results. It's easy for supporters of different arguments to generate visualizations that support their point.
+
+That was my impression from what I saw in my research. So I set out to see if I could demonstrate it, by using the same or similar data to support opposite arguments. What I found is that much of the time, just a tiny tweak in the process of making a graph completely changes it. Let me show you what I mean.
+
+First, let's look at gun homicides. After finding some reasonable data indicating homicide rates from various countries, and cleaning the data to be more usable, I got a nice table with data about the per capita murders which involved gun violence. So right off the bat I made a graph showing the countries with the highest murder rate.
+
+[expand title="Code"]
+<pre><code># Viz 1 Data Loading and Prep
+
+# Load First World Countries list ("Fully Developed" Countries)
+# https://en.wikipedia.org/wiki/The_World_Factbook_list_of_developed_countries
+fully_developed &lt;- scan("data/DevelopedCountries.txt", what = character(), sep = "\n")
+
+# Load and prep murder_rates table
+# https://en.wikipedia.org/wiki/List_of_countries_by_intentional_homicide_rate
+murder_rates &lt;- read.csv("data/wiki_homicides.csv", stringsAsFactors = F) %&gt;% filter(!is.na(Rate))
+colnames(murder_rates) &lt;- c("Country", "Rate", "Count", "Region", "Subregion", "Year", "Notes")
+murder_rates &lt;- murder_rates %&gt;% select(-Year, -Notes)
+
+# Load and prep gun_murders table
+# https://en.wikipedia.org/wiki/List_of_countries_by_firearm-related_death_rate
+gun_murders &lt;- read.csv("data/wiki_firearm_deaths.csv", stringsAsFactors = F)
+gun_murders &lt;- suppressWarnings( gun_murders %&gt;% 
+    remove.paren() %&gt;%
+    mutate(Year = as.numeric(Year), Homicides = as.numeric(Homicides), Suicides = as.numeric(Suicides),
+           Unintentional = as.numeric(Unintentional), Undetermined = as.numeric(Undetermined),
+           Guns.per.100 = as.numeric(Guns.per.100.inhabitants)) %&gt;%
+    select(-Year, -Sources.and.notes, -Total, -Guns.per.100.inhabitants) %&gt;%
+    na.omit()
+    )
+
+# Merge to form final data set
+v1.data &lt;- merge(murder_rates, gun_murders, by = "Country") %&gt;% 
+    select(-Count) %&gt;%
+    rename(All.murder.rate = Rate) %&gt;%
+    arrange(-Homicides) %&gt;%
+    mutate(Non.gun.murder = All.murder.rate - Homicides, Hom.Rank = row_number()) %&gt;%
+    filter(Hom.Rank &lt; 11 | Country == "United States") 
+v1.data$Country &lt;- factor(v1.data$Country, levels = rev(v1.data$Country))
+
+# Viz 1
+# Compare murder rates for various countries and gun-specific murder rates for those countries 
+# (cross reference with number of guns per capita)
+v1.1.colors &lt;- c("#feb24c", "#ffffff", "#f03b20", "#ffeda0")
+v1.gun_homicides &lt;- v1.data %&gt;%
+    ggplot(aes(y = Homicides, x = Country, fill = Subregion)) +
+        geom_col(color = "black") +
+        coord_flip() +
+        ggtitle("Gun Homicides") +
+        labs(y = "Gun Homicides (per 100,000 population)") +
+        scale_fill_manual(breaks = c("Southern Africa", "Central America", "South America"), 
+                          labels = c("Africa", "Central America", "South America"),
+                          values = v1.1.colors) +
+        guides(fill = guide_legend(title = "Region")) +
+        theme_Publication() +
+        theme(
+            #text = element_blank(),
+            
+            panel.grid.minor = element_blank(),
+            panel.grid.major.y = element_blank(),
+            legend.key = element_blank(),
+            legend.justification = c(1, 0), 
+            legend.position = c(0.95, 0.05)
+        ) 
+v1.gun_homicides
+#ggsave(file = 'figures/1.gun_homicides.tiff', v1.gun_homicides, width = 5, height = 6, dpi = 300)</code></pre>
+[/expand]
+Now I'm not sure if I came up with this myself or if I've seen this strategy before, but it occurred to me that some people might not consider it fair to compare the USA to undeveloped and underdeveloped countries. So I found an official list of "developed" countries and re-generated the graph using only these countries.
+
+[expand title="Code"]
+<pre><code># Viz 1 (part 2)
+# Compare murder rates for various countries and gun-specific murder rates for those countries 
+# (cross reference with number of guns per capita)
+v1.2.data &lt;- merge(murder_rates, gun_murders, by = "Country") %&gt;% 
+    select(-Count) %&gt;%
+    rename(All.murder.rate = Rate) %&gt;%
+    filter(Country %in% fully_developed) %&gt;%
+    arrange(-Homicides) %&gt;%
+    mutate(Non.gun.murder = All.murder.rate - Homicides, Hom.Rank = row_number()) %&gt;%
+    filter(Hom.Rank &lt; 11 | Country == "United States") 
+v1.2.data$Country &lt;- factor(v1.2.data$Country, levels = rev(v1.2.data$Country))
+v1.2.data$Subregion &lt;- factor(v1.2.data$Subregion, levels = c("Northern America", "Western Asia", 
+                                                              "Northern Europe", "Southern Europe", "Western Europe"))
+
+colfunc &lt;- colorRampPalette(c("#151E5E", "#308C75", "#52F7F8"))
+v1.gun_homicides_developed &lt;- v1.2.data %&gt;%
+    ggplot(aes(y = Homicides, x = Country, fill = Subregion)) +
+        geom_col(color = "black") +
+        coord_flip() +
+        ggtitle("Gun Homicides\nDeveloped Countries") +
+        labs(y = "Gun Homicides (per 100,000 population)") +
+        scale_fill_manual(values = colfunc(5)) +
+        guides(fill = guide_legend(title = "Region")) +
+        theme_Publication() +
+        theme(
+            #text = element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.grid.major.y = element_blank(),
+            axis.title.y = element_blank(),
+            
+            legend.justification = c(1, 0), 
+            legend.position = c(0.95, 0.05),
+            legend.key = element_blank()
+        )
+v1.gun_homicides_developed
+#ggsave(file = 'figures/1.gun_homicides_developed.tiff', v1.gun_homicides_developed, width = 5, height = 6, dpi = 300)</code></pre>
+[/expand]
+After generating these graphs, I added some radical rhetoric that might accompany such graphs. This is essentially just a fear-mongering way of pointing out the interesting part of the graph.
+
+<a href="http://databard.blog/wp-content/uploads/2018/03/BarCharts.jpg"><img class="aligncenter size-large wp-image-180" src="http://databard.blog/wp-content/uploads/2018/03/BarCharts-1024x541.jpg" alt="" width="700" height="370" /></a>
+
+Recall, these two graphs were made using the <strong>exact same</strong> data and the <strong>exact same</strong> procedure, the only difference being the decision that USA should only be compared to developed countries.
+
+The graphs tell very different stories, but is either of them <strong>wrong</strong>? Maybe it makes sense to limit the comparison to just USA and other developed countries ... or maybe that decision was made because it made the results support the author's views.
+
+In the above case we essentially filtered a dataset in two different ways to generate the two charts. Now let's look at a different strategy one might use - visualizing a different attribute. For this second pair of visualizations, I looked at gun violence in various United States, but I had the choice for what variable I used to indicate the level of gun violence. A friend suggested I investigate this, as the inclusion or exclusion of suicides is a tactic they have seen to influence the shape of the visualization. First, I generated a graph that includes both homicides and suicides in the calculation.
+
+[expand title="Code"]
+<pre><code># Viz 2 Data Loading and Prep
+
+# Load and prep us_murders table
+# https://en.wikipedia.org/wiki/List_of_countries_by_intentional_homicide_rate
+us_murders &lt;- read.csv("data/wiki_homicides_us_by_year.csv", stringsAsFactors = F) %&gt;% select(-Sources) %&gt;% 
+    rename(State = United.States)
+
+us_murders_yearly &lt;- us_murders %&gt;% 
+    gather(key=Year, value=MurdersPer100000, paste("X", 2000:2012, sep='')) 
+us_murders_yearly$Year &lt;- gsub('X', '', us_murders_yearly$Year)
+
+# Load and prep state_pops_yearly table
+# https://en.wikipedia.org/wiki/List_of_U.S._states_by_historical_population
+state_pops &lt;- read.csv("data/wiki_state_populations.csv", stringsAsFactors = F) %&gt;%
+    remove.commas(2:7)
+state_pops_yearly &lt;- data.frame(State = character(), Year = numeric(), Pop = numeric(), stringsAsFactors = F)
+ 
+for (i in 1:nrow(state_pops)) {
+    state_pops_yearly &lt;- rbind(state_pops_yearly, 
+                               infer.population(state_pops$Name[i], 
+                                                seq(1960, 2010, 10), 
+                                                as.numeric(state_pops[i, 2:7]), 
+                                                2000:2012)
+                              )
+}
+
+# Load Brady State Scores
+# http://www.crimadvisor.com/data/Brady-State-Scorecard-2014.pdf
+brady_scores &lt;- read.csv("data/brady_state_scores.csv", stringsAsFactors = F, header = F)
+colnames(brady_scores) &lt;- c("State", "BradyScore")
+
+# Load State Suicide Rates
+# https://en.wikipedia.org/wiki/Suicide_in_the_United_States
+state_suicides &lt;- read.csv("data/wiki_state_suicides.csv", stringsAsFactors = F) %&gt;%
+    mutate(share = Suicide.rate.per.100000.people / sum(Suicide.rate.per.100000.people)) %&gt;%
+    select(State, share)
+
+# Load US Suicides by year
+yearly_suicides &lt;- read.csv("data/yearly_suicide_rate.csv", stringsAsFactors = F)
+
+# Join and extrapolate
+suicides_state_year &lt;- merge(state_suicides, yearly_suicides) %&gt;% 
+    mutate(SuicideRatePer100000 = RatePer100000 * 50 * share) %&gt;%
+    select(-RatePer100000, -share) 
+
+# Viz 2 data
+v2.data &lt;- merge(us_murders_yearly, suicides_state_year) %&gt;%
+    mutate(GunDeathsPer100000 = MurdersPer100000 + SuicideRatePer100000) %&gt;%
+    merge(brady_scores) %&gt;%
+    mutate(brady = ifelse(BradyScore &gt; 0, "Most Restrictive", "Least Restrictive"), Year = as.numeric(Year))
+
+# Specific prep for Viz 2
+select.states &lt;- c(brady_scores$State[1:5], brady_scores$State[46:50])
+
+v2.labels &lt;- v2.data %&gt;%
+    filter(State %in% select.states, Year == 2012) %&gt;%
+    mutate(death.label.y = GunDeathsPer100000, murder.label.y = MurdersPer100000)
+v2.labels &lt;- spread.all.labels(v2.labels, "death.label.y")
+v2.labels &lt;- spread.all.labels(v2.labels, "murder.label.y")
+
+brady.green   &lt;- rgb(  0, 158,  13, max = 255)
+brady.red     &lt;- rgb(209,   0,   0, max = 255)
+brady.green.l &lt;- rgb( 51, 255,  68, max = 255)
+brady.red.l   &lt;- rgb(255, 102, 102, max = 255)
+
+# Viz 2 part 1
+label.align &lt;- 2012.5
+v2.deaths_by_state &lt;- v2.data %&gt;% 
+    filter( State %in% select.states ) %&gt;%
+    filter( Year &gt;= 2005 ) %&gt;%
+    ggplot(aes(x = Year, y = GunDeathsPer100000, color = brady, group = State)) +
+    geom_line() +
+    geom_label(data = v2.labels, 
+               aes(x = label.align, y = death.label.y, label = State, fill = brady), color = "black", size = 2.5, hjust = 0) +
+    geom_segment(aes(x = 2012, y = GunDeathsPer100000, xend = label.align, yend = death.label.y), 
+                 color = "black", linetype = 3, data = v2.labels) +
+    scale_y_continuous(limits = c(0, 26), expand = c(0, 0)) +
+    scale_x_continuous(limits = c(2005, 2014.5), breaks = seq(2005, 2011, 2), expand = c(0, 0)) +
+    scale_color_manual(values = c(brady.green, brady.red)) +
+    scale_fill_manual(values = c(brady.green.l, brady.red.l)) +
+    ggtitle("Gun Deaths\nUnited States") +
+    labs(y = "Gun Deaths* (per 100,000 population)") +
+    guides(color = guide_legend(title = "Gun Control\nLegislation"),
+           fill = FALSE) +
+    theme_Publication() +
+    theme(
+        #axis.title = element_blank(), axis.text = element_blank(), legend.title = element_blank(), legend.text = element_blank(),
+        
+        legend.title = element_text(hjust = 0.5),
+        legend.justification = c(1, 0), 
+        legend.position = c(0.97, 0.05),
+        
+        panel.grid.minor = element_blank(),
+        axis.title.x = element_blank()
+    )
+
+ggsave(file = 'figures/2.deaths_by_state.tiff', v2.deaths_by_state, width = 5, height = 6, dpi = 300)</code></pre>
+[/expand]
+Now to compare, I used only the number of gun homicides per state to represent gun violence.
+
+[expand title="Code"]
+<pre><code>v2.homicides_by_state &lt;- v2.data %&gt;% 
+    filter( State %in% select.states ) %&gt;%
+    filter( Year &gt;= 2005 ) %&gt;%
+    ggplot(aes(x = Year, y = MurdersPer100000, color = brady, group = State)) +
+    geom_line() +
+    geom_label(data = v2.labels, 
+               aes(x = label.align, y = murder.label.y, label = State, fill = brady), 
+               color = "black", size = 2.5, hjust = 0) +
+    geom_segment(aes(x = 2012, y = MurdersPer100000, xend = label.align, yend = murder.label.y), 
+                 color = "black", linetype = 3, data = v2.labels) +
+    scale_y_continuous(limits = c(0, 26), expand = c(0, 0)) +
+    scale_x_continuous(limits = c(2005, 2014.5), breaks = seq(2005, 2011, 2), expand = c(0, 0)) +
+    scale_color_manual(values = c(brady.green, brady.red)) +
+    scale_fill_manual(values = c(brady.green.l, brady.red.l)) +
+    ggtitle("Gun Homicides\nUnited States") +
+    labs(y = "Gun Homicides (per 100,000 population)") +
+    guides(color = guide_legend(title = "Gun Control\nLegislation"),
+           fill = FALSE) +
+    theme_Publication() +
+    theme(
+        #axis.title = element_blank(), axis.text = element_blank(), legend.title = element_blank(), legend.text = element_blank(),
+        
+        legend.title = element_text(hjust = 0.5),
+        legend.justification = c(1, 1), 
+        legend.position = c(0.97, 0.75),
+        
+        panel.grid.minor = element_blank(),
+        axis.title.x = element_blank()
+    )
+v2.homicides_by_state
+#ggsave(file = 'figures/2.homicides_by_state.tiff', v2.homicides_by_state, width = 5, height = 6, dpi = 300)</code></pre>
+[/expand]
+<a href="http://databard.blog/wp-content/uploads/2018/03/LineCharts-1.jpg"><img class="aligncenter size-large wp-image-182" src="http://databard.blog/wp-content/uploads/2018/03/LineCharts-1-1024x709.jpg" alt="" width="700" height="485" /></a>
+
+Notice how big of a difference suicides make when depicting the level of gun violence. Note that "Gun Deaths" should really include other things like accidental shootings, but for this vis I just used homicides and suicides. That's one of the tricky things about a label like "Gun Deaths" - if you don't think critically, it is easy to assume that the only way a gun causes deaths is through murders, where in most states less than half of gun deaths are caused by malicious intent (towards others, at least).
+
+Ignoring the somewhat misleading label of "Gun Deaths", both of these graphs have some valid points. The left graph shows that gun control legislation has a pretty clear effect on the number of "Gun Deaths", though it would be more honest of this visualization to split it up into types of "Gun Deaths" and show that the greatest effect is in the reduction of gun-assisted suicides. The right graph demonstrates the puzzling point that gun murder rates are, in fact, very similar, even when comparing the states with the most and least restrictive laws. Or at least that appears to be the case when the vis is generated using this data set, which is another potential concern when generating such graphs.
+
+Finally, how could we talk about gun control without showing a map of the United States? I wasn't sure what exactly I wanted to show with map data, so I played around with some different ideas until I found some interesting discrepancies. This pair of visualizations demonstrates how starting with a different data set can drastically affect the outcome.
+
+I set off with the general goal of showing which states have the most guns, and I came across two different ways that this might be accomplished. In the first data set I visualized, the metric was the number of registered guns in each state.
+
+[expand title="Code"]
+<pre><code># Data Loading and Prep for Viz 3
+
+# Load guns counts for each state
+# http://concealednation.org/wp-content/uploads/2016/01/gun-table.png
+gun_count &lt;- read.csv("data/guns_per_state.csv", stringsAsFactors = F)
+
+# Load gun ownership rates per state
+# http://demographicdata.org/facts-and-figures/gun-ownership-statistics/
+# downloaded as "DS_Final/004-Crime and Gun Statistics.xlsx"
+gun_ownership &lt;- read.csv("data/gun_ownership_state.csv", stringsAsFactors = F)
+gun_prevalence &lt;- merge(gun_count, gun_ownership) %&gt;%
+    rename(Ownership.Rate = Gun.Ownership)
+
+# Merge data into state map data
+data("fifty_states")
+prevalence.data &lt;- gun_prevalence %&gt;%
+    mutate(id = tolower(State),
+           Gun.Owners.Per.1k = Ownership.Rate * 1000, 
+           Registered.Guns.Per.1k = Guns.Per.1k)
+
+gun.map &lt;- prevalence.data %&gt;%
+    mutate(region = tolower(State)) %&gt;%
+    merge(fifty_states) %&gt;%
+    group_by(group) %&gt;%
+    arrange(order)
+
+# Calculate centers to plot dots
+data(state)
+state.center &lt;- data.frame ("State" = state.name, "Lon" = state.center$x, "Lat" = state.center$y)
+state.center[state.center$State == "Alaska", "Lon"] &lt;- -117.5 
+state.center[state.center$State == "Alaska", "Lat"] &lt;- 28.0744 
+
+# Shared ggmap used by both plots
+base.ggmap &lt;- ggplot() + 
+    coord_map("albers", lat0 = 30, lat1 = 40) + 
+    theme_void() +
+    theme(
+        legend.box = "horizontal"
+    )
+
+# Viz 3 part 1: Registered Guns
+registered.points &lt;- c( prevalence.data %&gt;% arrange(Registered.Guns.Per.1k) %&gt;% select(State, Registered.Guns.Per.1k) %&gt;% head(5) %&gt;% .$State,
+    prevalence.data %&gt;% arrange(Registered.Guns.Per.1k) %&gt;% select(State, Registered.Guns.Per.1k) %&gt;% tail(5) %&gt;% .$State
+    )
+
+registered.map &lt;- base.ggmap + 
+    geom_map(data=gun.map, map=gun.map, color="black", size=0.15,
+             aes(long, lat, map_id=region, fill=Registered.Guns.Per.1k)) + 
+    geom_point(data=subset(state.center, State %in% registered.points), aes(Lon, Lat), size=1) +
+    scale_fill_gradient2("Registered Guns\n(per 1,000 Population)", low = "green", mid = "white", high = "red", 
+                         midpoint = log(11), trans = "log", breaks=c(11,150), labels=c("11 (median)", "150")) +
+    ggtitle("Registered Guns by State") +
+    theme(
+        #text = element_blank(),
+        plot.title = element_text(hjust = 0.5),
+        legend.justification = c(1, 1), 
+        legend.position = c(0.975, 0.65), 
+        legend.key = element_blank()
+    )
+registered.map
+#ggsave(file='figures/3.registered.map.tiff', registered.map, width = 9, height = 6, dpi=300)</code></pre>
+[/expand]
+Then I did the same thing, but this time starting with a data set showing gun ownership rates by state.
+
+[expand title="Code"]
+<pre><code># Viz 3 part 2: Ownership Map
+ownership.points &lt;- c( prevalence.data %&gt;% arrange(Gun.Owners.Per.1k) %&gt;% select(State, Gun.Owners.Per.1k) %&gt;% head(5) %&gt;% .$State,
+    prevalence.data %&gt;% arrange(Gun.Owners.Per.1k) %&gt;% select(State, Gun.Owners.Per.1k) %&gt;% tail(5) %&gt;% .$State
+    )
+
+ownership.map &lt;- base.ggmap + 
+    geom_map(data=gun.map, map=gun.map, aes(long, lat, map_id=region, fill=Gun.Owners.Per.1k), color="black", size=0.15) + 
+    geom_point(data=subset(state.center, State %in% ownership.points), aes(Lon, Lat), size=1) +
+    scale_fill_gradient2("Gun Owners\n(per 1,000 Population)", low = "green", mid = "white", high = "red", 
+                         midpoint = 394.5, breaks=c(100,200,300,394.5,500), 
+                         labels=c("100", "200", "300", "394.5 (median)", "500")) +
+    ggtitle("Gun Owners by State") +
+    theme(
+        #text = element_blank(),
+        plot.title = element_text(hjust = 0.5),
+        legend.justification = c(1, 1), 
+        legend.position = c(0.975, 0.65),
+        legend.key = element_blank()
+    )
+ownership.map
+#ggsave(file='figures/3.ownership.map.tiff', ownership.map, width = 9, height = 6, dpi=300)</code></pre>
+[/expand]
+<a href="http://databard.blog/wp-content/uploads/2018/03/Maps-1.jpg"><img class="aligncenter size-large wp-image-183" src="http://databard.blog/wp-content/uploads/2018/03/Maps-1-1024x944.jpg" alt="" width="700" height="645" /></a>
+
+The intent of these two maps may both be to show the relative popularity of guns in each state, but the choice of the starting data set alters things drastically, and for some good reasons! Part of the discrepancy is likely that a gun owner can have multiple registered guns. I believe the most influential factor in this case is the fact that the gun ownership data was collected using an anonymous, volunteer-based survey system, while registering guns is a much more official process. The top map makes Wyoming look like a major outlier as far as gun popularity goes, but in bottom map it isn't even in the top 5 states. Perhaps even more surprising is Idaho, which changes from being in the <strong>top 5</strong> most <em>guns</em> per capita to the <strong>bottom 5</strong> most <em>gun owners</em> per capita! Seeing these two maps next to each other makes it clear that these two values (registered guns and gun ownership) do <strong>not</strong> measure the same thing, and the discrepancies make it very difficult to make a clear interpretation of either data set.
+
+That's all for now! If nothing else, I hope that you have an increased awareness of how data can be "massaged" to alter the story it tells. Please be critical of visualizations before basing important decisions on them. Just because data is presented in a nice graph doesn't mean it is true, or that it tells the full story.
+
+[/wptab]
+
+[end_wptabset]

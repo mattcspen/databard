@@ -1,0 +1,138 @@
+[wptab name='Narrative']
+
+<a href="http://databard.blog/wp-content/uploads/2018/02/subsequent.gest_-1.jpeg"><img src="http://databard.blog/wp-content/uploads/2018/02/subsequent.gest_-1-300x300.jpeg" alt="" width="300" height="300" class="aligncenter size-medium wp-image-186" /></a>
+
+Hi all!
+
+Recently I've been putting a lot of thought and effort into preparing for my second child. Of course as a data scientist I am curious about some baby-related statistics. I was looking at a website where the author looks into a lot of interesting questions about baby births - check it out <a href="https://spacefem.com/pregnant/charts/duedate0.php">here</a>. I don't want to sound over-critical of the analytics on the site, because I think that a lot of the content is very good, from the perspectives of asking creative and relevant questions, using an appropriate data science approach to answering them, and discussing the strengths and limitations of the explorations. However, as always, answering questions can bring up new questions, so I wanted to follow up <a href="https://spacefem.com/pregnant/charts/duedate5.php">this post</a>.
+
+In the above post, the author explores the gestation period for non-first child births. The exploration calculated that a baby is, on average, born 0.04 days later than the preceding baby. However, one of the questions this was supposed to answer was "If your first baby was delivered early, will your second baby also be early?" I feel that statistic doesn't really answer the question, because it groups all births into the same category regardless of whether the original birth was early or late. This question is relevant to me, because my first child was almost two weeks late, so I am interested to know whether to expect my next child to be similarly late, earlier, or even later.
+
+[caption id="attachment_172" align="aligncenter" width="400"]<img class="size-large wp-image-172" src="http://databard.blog/wp-content/uploads/2018/02/Collage-2017-12-21-11_16_58-1024x1024.jpg" alt="" width="400" height="400" /> Lincoln (left) was 10 days late. Baby #2 (right) at 32 week ultrasound.[/caption]
+
+So let's dive in! After grabbing the data, there were several reasons I had for pruning it to be cleaner - if you are interested, the details are in the technical post.
+
+Essentially the main questions I'm focusing on here are "If my first baby was early, should I expect my second to be later?" and the opposite: "If my first baby was late, will my second be earlier?"
+
+To answer the question literally, I ran some statistics similar to what was done in the original post, but divided according to whether the first baby was early or late.
+
+[ultimatetables 1 /]
+
+Aha! So here we see that when the first baby is early, the second baby is, on average, 5.1 days later. And when the first baby is late, the second baby is an average of 3.6 days earlier.
+
+I also want to point out that the standard deviations are fairly large, in comparison to the averages. This indicates a lot of variability in how long the second baby gestates in comparison to the first. In fact, by these statistics if your first baby was born early, there is a 31.5% chance that the second baby will come even earlier!
+
+Even this, though, is too much of a generalization. After all, I would think that if your first baby was <strong>very</strong> early, it would be a lot more likely for the second baby to be later than if the first was just a couple of days early. However, it is hard to get a good feeling for this using statistics - separating the births into even more specific segments (e.g. very early, early, late, very late) would reduce the sample sizes for all of the groups, reducing how confident I would be to rely upon the results.
+
+Instead, a question like this is best answered with a good visualization, not numbers. Here is a visualization comparing the first baby and the second baby for the 286 families. At every height is a different mother, where the dot is the gestation length for the first baby and the arrow indicates whether the second baby was earlier or later, and by how much. Note there are some blue dots which indicate that the two babies had the same gestation length.
+
+<a href="http://databard.blog/wp-content/uploads/2018/02/subsequent.gest_-1.jpeg"><img class="aligncenter size-large wp-image-186" src="http://databard.blog/wp-content/uploads/2018/02/subsequent.gest_-1-1024x1024.jpeg" alt="" width="700" height="700" /></a>
+
+This figure is much more useful than a few simple statistics - here you can find just where your first baby was born and get a feel for the distribution yourself. By the look of it, very early births seem to get aggressively corrected for the subsequent birth; even though many of the second babies in these families are still early, they are much closer to the expected gestation length. On the other hand, late births usually lead to earlier subsequent births, but the difference doesn't seem quite as dramatic in most cases. I also like this visual because it really gives you a feel for the uncertainty - in this dataset, mothers who had their first birth within a couple of days of 40 weeks had a second baby come out anywhere from 37 weeks to 42. So you can look at these examples and get a feel for what will probably happen, but you never know!
+
+<strong>UPDATE!</strong> It turns out that our second son was born 2 days after his due date! Which, looking at this vis, is about where I might have expected him to be, given that our first son was 10 days late!
+
+[/wptab]
+[wptab name='Technical']
+
+<a href="http://databard.blog/wp-content/uploads/2018/02/subsequent.gest_-1.jpeg"><img src="http://databard.blog/wp-content/uploads/2018/02/subsequent.gest_-1-300x300.jpeg" alt="" width="300" height="300" class="aligncenter size-medium wp-image-186" /></a>
+
+Hi all!
+
+Recently I've been putting a lot of thought and effort into preparing for my second child. Of course as a data scientist I am curious about some baby-related statistics. I was looking at a website where the author looks into a lot of interesting questions about baby births - check it out <a href="https://spacefem.com/pregnant/charts/duedate0.php">here</a>. I don't want to sound over-critical of the analytics on the site, because I think that a lot of the content is very good, from the perspectives of asking creative and relevant questions, using an appropriate data science approach to answering them, and discussing the strengths and limitations of the explorations. However, as always, answering questions can bring up new questions, so I wanted to follow up <a href="https://spacefem.com/pregnant/charts/duedate5.php">this post</a>.
+
+In the above post, the author explores the gestation period for non-first child births. The exploration calculated that a baby is, on average, born 0.04 days later than the preceding baby. However, one of the questions this was supposed to answer was "If your first baby was delivered early, will your second baby also be early?" I feel that did not answer that question in a satisfactory manner, because it groups all births into the same category regardless of whether the original birth was early or late. This question is relevant to me, because my first child was almost two weeks late, so I am interested to know whether to expect my next child to be similarly late, earlier, or even later.
+
+[caption id="attachment_172" align="aligncenter" width="400"]<img class="size-large wp-image-172" src="http://databard.blog/wp-content/uploads/2018/02/Collage-2017-12-21-11_16_58-1024x1024.jpg" alt="" width="400" height="400" /> Lincoln (left) was 10 days late. Baby #2 (right) at 32 week ultrasound.[/caption]
+
+So let's dive in. Fortunately the linked website makes their data easily available <a href="https://spacefem.com/pregnant/charts/duedate40.php">here</a>, so that wasn't an issue.
+
+[expand title="Code"]
+<pre><code>data &lt;- read.csv("data/sf_gestationdata.csv")</code></pre>
+[/expand]
+
+First of all, I applied some filters to clean up the data. Since this is from an open survey, there is some missing data and a lot of entries that are not applicable (such as when only one child is listed for a mother). Furthermore, lots of factors like whether a C-section was performed, whether the baby was induced, or whether there were twins involved (or more!). Furthermore, I filtered out just a few extreme entries where a baby was apparently born before 35 weeks or after 43 weeks. These births could happen, but it is just as likely that they are data collection errors, or that there was some unrecorded complication preventing it from being a "normal" gestation. Also note that in the original link, all non-first children are included, whereas I limited my data analysis to the differences between the first and second children.
+
+[expand title="Code"]
+<pre><code># data.filt is the filtered data
+data.filt &lt;- data %&gt;% 
+    filter(cesarean == 0, induced == 0, multiples == 1, previousbornonday != "NULL") %&gt;%
+    mutate(previousbornonday = as.numeric(as.character(previousbornonday))) %&gt;%
+    filter(bornonday &gt;= 245, bornonday &lt;= 301, previousbornonday &gt;= 245, previousbornonday &lt;= 301) %&gt;%
+    filter(previousbirths == 1) %&gt;%
+    select(IP.ID, bornonday, previousbornonday, motherbirthyear, grams, pounds, ounces, duedatebase)</code></pre>
+[/expand]
+
+Essentially the main questions I'm focusing on here are "If my first baby was early, should I expect my second to be later?" and the opposite - "If my first baby was late, will my second be earlier?" So I will first need to calculate the difference between the gestation lengths for the second and first children. While I was at it, I also noted when this difference was positive (later) or negative (earlier).
+
+[expand title="Code"]
+<pre><code># data.proc is the processed data with all values
+# needed to plot the figure below.
+data.proc &lt;- data.filt %&gt;%
+    mutate(diff = bornonday - previousbornonday) %&gt;%
+    arrange(previousbornonday, diff) %&gt;%
+    mutate(dir = diff / abs(diff), id=row_number())
+data.proc$dir[is.na(data.proc$dir)] &lt;- 0
+table(data.proc$dir)</code></pre>
+[/expand]
+
+So now to answer the literal question as stated, I can run some statistics similar to what was done in the original post, but divided according to whether the first baby was early or late.
+
+[expand title="Code"]
+<pre><code># Compare to https://spacefem.com/pregnant/charts/duedate5.php
+data.proc %&gt;%
+    mutate(early = ifelse(previousbornonday &lt; 280, 1, 0)) %&gt;%
+    group_by(early) %&gt;%
+    summarize(n = length(diff), mean = mean(diff), med = median(diff), sd = sd(diff))</code></pre>
+[/expand]
+[ultimatetables 1 /]
+
+Aha! So here we see that when the first baby is early, the second baby is, on average, 5.14 days later. And when the first baby is late, the second baby is an average of 3.59 days earlier. Also note the median values, as the mean is susceptible to outliers. It looks like even though I removed the extreme outliers already, there is enough of a tail for the early first babies to skew the average later. This can be seen from the fairly significant difference between the average and the median.
+
+I also want to point out that the standard deviations are fairly large, in comparison to the averages. This indicates a lot of variability within the relationship between the length of gestation for the first baby vs. the second. In fact, by these statistics if your first baby was born early, there is a 31.5% chance that the second baby will come even earlier!
+
+Even this, though, is too much of a generalization. After all, I would think that if your first baby was <strong>very</strong> early, it would be a lot more likely for the second baby to be later than if the first was just a couple of days early. However, it is hard to get a good feeling for this using statistics - stratifying the births into even more specific segments (e.g. very early, early, late, very late) would reduce the sample sizes for all of the groups, reducing the confidence.
+
+Instead, a question like this is best answered with a good visualization, not numbers. Here is a visualization comparing the first baby and the second baby for the 286 families that passed all of the above criteria. At every height is a different mother, where the dot is the gestation length for the first baby and the arrow indicates whether the second baby was earlier or later, and by how much. Note there are some blue dots which indicate that the two babies had the same gestation length.
+
+[expand title="Code"]
+<pre><code>size.scale &lt;- 0.6 
+    # I use this global adjustment to all sizes because it is hard to 
+    # know how the sizes will change when you save as an image file,
+    # but I want the indicated sizes to be rougly the same ratio. This
+    # lets me adjust all of them at once, if I think everything needs
+    # to be larger or smaller.
+change.plot &lt;- data.proc %&gt;%
+    filter(dir != 0) %&gt;%
+    ggplot(aes(x = previousbornonday, y = id)) +
+    geom_vline(xintercept = 280, linetype = 2) +
+    geom_hline(yintercept = nrow(data.proc) / 2, linetype = 2) +
+    geom_point(size = 0.5 * size.scale) +
+    geom_segment(aes(xend = bornonday, yend = id, color = factor(dir)), 
+                 size = 0.5 * size.scale, arrow = arrow(length = unit(0.01, "npc"))) +
+    geom_point(data = data.proc[data.proc$dir == 0,], color = "#5c5cff", size = size.scale) +
+    scale_color_manual(values = c("#ff2929", "#00bd00")) +
+    scale_x_continuous(limits = c(245, 315), breaks = seq(252, 308, 14), 
+                       minor_breaks = seq(245, 315, 14), labels = seq(36, 44, 2), expand = c(0, 0)) +
+    xlab("Weeks of Gestation") +
+    scale_y_continuous(expand = c(0, 2), breaks = NULL) +
+    ggtitle("Gestation Difference for the Second Baby") +
+    theme_Publication() +
+    theme( 
+        axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.line.y = element_blank(),
+        legend.position = "none"
+        )
+change.plot
+#ggsave(file = "figures/subsequent.gest.jpeg", change.plot, width = 5, height = 5, dpi = 200)</code></pre>
+[/expand]
+<a href="http://databard.blog/wp-content/uploads/2018/02/subsequent.gest_-1.jpeg"><img class="aligncenter size-large wp-image-186" src="http://databard.blog/wp-content/uploads/2018/02/subsequent.gest_-1-1024x1024.jpeg" alt="" width="700" height="700" /></a>
+
+This figure is much more useful than a few simple statistics - here you can find just where your first baby was born and get a feel for the distribution yourself. By the look of it, very early births seem to get aggressively corrected for the subsequent birth; even though many of the second babies in these families are still early, they are much closer to the expected gestation length. On the other hand, late births usually lead to earlier subsequent births, but the difference doesn't seem quite as dramatic in most cases. I also like this visual because it really gives you a feel for the uncertainty - in this dataset, mothers who had their first birth within a couple of days of 40 weeks had a second baby come out anywhere from 37 weeks to 42. So you can look at these examples and get a feel for what will probably happen, but you never know!
+
+<strong>UPDATE!</strong> It turns out that our second son was born 2 days after his due date! Which, looking at this vis, is about where I might have expected him to be, given that our first son was 10 days late!
+
+[/wptab]
+[end_wptabset]

@@ -1,0 +1,114 @@
+[wptab name='Narrative']
+
+<a href="https://i0.wp.com/databard.blog/wp-content/uploads/2018/04/LabelledGunLawVis.jpg"><img src="http://databard.blog/wp-content/uploads/2018/04/LabelledGunLawVis-teaser.jpg" alt="" width="300" height="300" class="aligncenter size-full wp-image-295" /></a>
+
+Hi all!
+
+While I was looking around at the gun control datasets for my previous post, I thought it would be a good idea to see what sorts of laws were prevalent in various states. Mainly, I saw <a href="https://www.theguardian.com/world/interactive/2012/may/08/gay-rights-united-states">this visualization of gay rights in america</a> and liked the circular format of it, so I thought I'd give it a shot using the topic that I was already stepping into.
+
+This post is going to be pretty quick - I don't have too much to discuss. However, I do want to point out one thing. If you recall, my previous gun control post discussed how the visualizations are often biased one way or another (sometimes maliciously, sometimes not). This time I tried to create a vis that was completely unbiased - I just wanted to show the facts about which states had certain laws. I tried hard to use words that didn't imply whether having more (or less) gun legislature was a positive or negative thing.
+
+What I noticed was that the data itself came from an organization that generally supports gun control, the <a href="http://www.crimadvisor.com/data/Brady-State-Scorecard-2014.pdf">Brady Campaign</a>. Although the existence of these laws is definitely true and (theoretically) isn't biased, they were the ones making the decisions about how to group different laws into similar categories (represented here by different colors), and I'm quite sure that this grouping is impacted by their pro-gun-control ideals. For this particular project, I could have done my own research to find laws, and come up with my own groupings, but for many other kinds of data which don't have public records there won't necessarily be an unbiased, factual source of information.
+
+To make it worse, for 22 years the "Dickey amendment" has heavily restricted research about the impact of guns in America (<a href="https://www.washingtonpost.com/news/powerpost/paloma/the-health-202/2018/02/22/the-health-202-gun-violence-research-by-the-government-hasn-t-been-funded-in-two-decades-but-that-may-soon-change/5a8dc13e30fb047655a06856/?utm_term=.d7cb1244f576">see news post here</a>). I would think that no matter what their views on the issue are, everybody would rather have more reputable research into the topic (or at least more research - then we can identify which ones are reputable) so that we can make better-informed decisions. As it is now, the main sources of data that we have come from organizations that have strong views about whether they want more or less gun control, and inevitably these are going to be flawed sources of data. Fortunately, there is recent discussion about ending that amendment so it may be possible for more research to be conducted going forward.
+
+Anyway, I had fun making this circular visualization, and I included some extra information in it just for fun, and also for clarity of communication. I hope you like it, and I would be glad to hear your input in the comments!
+
+<a href="http://databard.blog/wp-content/uploads/2018/04/LabelledGunLawVis.jpg"><img src="http://databard.blog/wp-content/uploads/2018/04/LabelledGunLawVis-1024x892.jpg" alt="" width="689" height="600" class="aligncenter size-large wp-image-293" /></a>
+
+[/wptab]
+[wptab name='Technical']
+
+<a href="https://i0.wp.com/databard.blog/wp-content/uploads/2018/04/LabelledGunLawVis.jpg"><img src="http://databard.blog/wp-content/uploads/2018/04/LabelledGunLawVis-teaser.jpg" alt="" width="300" height="300" class="aligncenter size-full wp-image-295" /></a>
+
+Hi all!
+
+While I was looking around at the gun control datasets for my previous post, I wanted to identify sorts of laws were prevalent in various states. Mainly, I saw <a href="https://www.theguardian.com/world/interactive/2012/may/08/gay-rights-united-states">this visualization of gay rights in america</a> and liked the circular format of it, so I wanted to replicate a similar format of visualization using the topic that I was already stepping into.
+
+As an extension of my older post, I want to point out one thing. If you recall, my previous gun control post discussed how the visualizations are often biased one way or another due to subtle "manipulation" of the data processing procedure. This time I made an attempt to create a visualization that was devoid of bias - I just wanted to show the facts about which states had certain laws. I tried hard to use language that didn't imply whether having more (or less) gun legislature was a positive or negative thing.
+
+The thing that came to my attention as a potential source of bias was that the data itself came from an organization that generally supports gun control, the <a href="http://www.crimadvisor.com/data/Brady-State-Scorecard-2014.pdf">Brady Campaign</a>. Although the existence of the legislature itself is factual and (theoretically) can't be biased, the organization made the decisions about how to categorize laws into similar themes, and I suspect that the inherent groupings of the laws is impacted by their pro-gun-control ideals. In this case, I could have done my own research to determine what the laws were from the states, and potentially come up with my own categorization scheme, but for many other kinds of gun prevalence and usage data there wouldn't necessarily be an unbiased, factual source of information.
+
+This is exacerbated by the fact that for 22 years the "Dickey amendment" has essentially prevented any government funded research regarding the impact of guns in America (<a href="https://www.washingtonpost.com/news/powerpost/paloma/the-health-202/2018/02/22/the-health-202-gun-violence-research-by-the-government-hasn-t-been-funded-in-two-decades-but-that-may-soon-change/5a8dc13e30fb047655a06856/?utm_term=.d7cb1244f576">see news post here</a>). I would think that no matter what their views on the issue are, that everybody would rather have more reputable research into the topic so that we can make better-informed decisions. As it is now, the main sources of data that we have come from organizations that have strong views about whether they want more or less gun control, and inevitably these are going to be flawed sources of data. Fortunately, there is recent discussion about ending that amendment so it may be possible for more research to be conducted going forward.
+
+Anyway, this circular visualization in a lot of ways is easier to implement than it might seem, as it is only a quick transformation to change it from a rectangular grid-map style of visual to wrap it around the polar axis. It actually would have been a lot easier if I didn't feel the need to put the bars separating the US regions, because that decision made me change everything from categorical variables to specifically hard-coded quantitative coordinates. After generating the vis, I included some extra information in it just for fun, and also for clarity of communication. I hope you like it, and I would be glad to hear your input in the comments!
+
+[expand title="Code"]<pre><code># Data Loading and Prep for Viz 4
+# Load data for gun restriction laws per state
+restrictions <- read.csv("data/restrictions_state.csv", stringsAsFactors = F) %>% filter(!is.na(.[,2])) %>% select(-Brady.Rating)
+colnames(restrictions) <- c("State", "Region", "Subregion", "Background Checks", "Full Discretion", "Screening for Purchase", 
+                            "Identify Dangerous People", "Secure Undeserved Guns", "Prevent Sale to Criminals")
+
+# Quick-adjust factors #
+gap.size <- 5
+alpha.scale.factor <- 2
+# Quick-adjust factors #
+
+all.prep <- restrictions %>% 
+    gather(key = Category, value = Value, colnames(restrictions)[4:9]) %>%
+    mutate(Category = factor(Category,
+                             levels = c("Identify Dangerous People", "Secure Undeserved Guns", "Prevent Sale to Criminals",
+                                        "Background Checks", "Full Discretion", "Screening for Purchase")),
+           Region = factor(Region, levels = c("NE", "S", "MW", "W")), 
+           Subregion = factor(Subregion, levels = c("New England", "Middle Atlantic", "South Atlantic", "East South Atlantic",
+                                                    "East South Central", "West South Central", "East North Central", 
+                                                    "West North Central", "Mountain", "Pacific")),
+           y = as.numeric(Category) + gap.size) %>%
+    mutate(Abb = state.abb[match(State, state.name)]) %>%
+    arrange(Region, Subregion, Abb) %>%
+    ungroup() %>%
+    mutate(x = group_indices(., Region, Subregion, Abb)) 
+
+state.abbs <- all.prep %>% select(State, Region, Subregion, Abb, x) %>% unique()
+
+long.data <- all.prep %>%
+    group_by(Category) %>%
+    mutate(min = min(Value)) %>%
+    filter(Value != min(Value)) %>%
+    mutate(min = min(Value), max = max(Value), Norm = (Value - min) / max) %>%
+    mutate(Norm = (Norm + alpha.scale.factor - 1) / alpha.scale.factor)
+
+v4.colors <- c(brewer.pal(7, 'Dark2'))[c(6,5,4,3,2,1)]
+
+# Plotting Viz 4
+
+# Plot-specific elements
+ymin <- gap.size
+num.ys <- length(levels(long.data$Category)) 
+line.extension <- 3
+ymax <- ymin + num.ys + line.extension
+
+divisions <- long.data %>%
+    group_by(Subregion) %>%
+    summarize(max = max(x)) %>%
+    mutate(x = max + 0.5, xend = max + 0.5, y = ymin, yend = ymax) 
+
+# Plot it
+v4.round <- ggplot(data = long.data, aes(x = x, y = y, fill = Category, alpha = Norm)) +
+    geom_tile(color = "white", size = 0.75) +
+    geom_text(data = state.abbs, aes(label = Abb, fill = NULL), y = ymin + num.ys + 1, alpha = 1, size = 4) +
+    geom_segment(data = divisions, aes(x = x, xend = xend, y = y, yend = yend, fill = NULL, alpha = NULL)) +
+    scale_y_continuous(limits = c(0, ymax)) +
+    scale_alpha_continuous(range = c(0.25, 1)) +
+    scale_fill_manual(values = v4.colors) +
+    coord_polar("x") +
+    guides(fill = F, alpha = F) +
+    theme(
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank()
+    )
+v4.round
+#ggsave(file = 'figures/4.round.tiff', v4.round, width = 12, height = 12, dpi = 200)</code></pre>[/expand]
+<br>
+
+<a href="http://databard.blog/wp-content/uploads/2018/04/LabelledGunLawVis.jpg"><img src="http://databard.blog/wp-content/uploads/2018/04/LabelledGunLawVis-1024x892.jpg" alt="" width="689" height="600" class="aligncenter size-large wp-image-293" /></a>
+
+[/wptab]
+[end_wptabset]
